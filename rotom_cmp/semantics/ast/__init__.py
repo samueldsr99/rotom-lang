@@ -157,3 +157,22 @@ class AssignStmt(Stmt):
 
     def visit(self, visitor: Visitor, *args):
         return visitor.visit_AssignStmt(self, *args)
+
+
+class DispatchVariableExpr(Expr):
+    def __init__(self, expr: Expr, name: str) -> None:
+        self.expr = expr
+        self.name = name
+
+    def visit(self, visitor: Visitor, *args):
+        return visitor.visit_DispatchVariableExpr(self, *args)
+
+
+class DispatchMethodExpr(Expr):
+    def __init__(self, expr: Expr, name: str, params: List[Expr]) -> None:
+        self.expr = expr
+        self.name = name
+        self.params = params
+
+    def visit(self, visitor: Visitor, *args):
+        return visitor.visit_DispatchMethodExpr(self, *args)

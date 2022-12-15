@@ -43,3 +43,9 @@ class Visitor(metaclass=ABCMeta):
 
     def visit_AssignStmt(self, node, *args):
         pass
+
+    def visit_DispatchVariableExpr(self, node, *args):
+        pass
+
+    def visit_DispatchMethodExpr(self, node, *args):
+        pass

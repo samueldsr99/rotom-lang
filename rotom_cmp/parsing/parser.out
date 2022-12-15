@@ -5,7 +5,6 @@ Unused terminals:
     AND
     BANG
     CLASS
-    DOT
     EOF
     FALSE
     FOR
@@ -54,17 +53,19 @@ Rule 33    expr -> NUMBER
 Rule 34    expr -> NIL
 Rule 35    expr -> STRING
 Rule 36    expr -> LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-Rule 37    expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-Rule 38    expr_list_comma -> expr COMMA expr_list_comma
-Rule 39    expr_list_comma -> expr
-Rule 40    expr_list_comma -> empty
-Rule 41    expr -> IDENTIFIER
-Rule 42    expr -> expr IF expr ELSE expr
-Rule 43    expr -> LEFT_BRACE stmt_list RIGHT_BRACE
-Rule 44    declaration -> LET IDENTIFIER EQUAL expr SEMICOLON
-Rule 45    declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON
-Rule 46    assign -> IDENTIFIER EQUAL expr SEMICOLON
-Rule 47    empty -> <empty>
+Rule 37    expr -> expr DOT IDENTIFIER
+Rule 38    expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+Rule 39    expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+Rule 40    expr_list_comma -> expr COMMA expr_list_comma
+Rule 41    expr_list_comma -> expr
+Rule 42    expr_list_comma -> empty
+Rule 43    expr -> IDENTIFIER
+Rule 44    expr -> expr IF expr ELSE expr
+Rule 45    expr -> LEFT_BRACE stmt_list RIGHT_BRACE
+Rule 46    declaration -> LET IDENTIFIER EQUAL expr SEMICOLON
+Rule 47    declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON
+Rule 48    assign -> IDENTIFIER EQUAL expr SEMICOLON
+Rule 49    empty -> <empty>
 
 Terminals, with rules where they appear
 
@@ -73,27 +74,27 @@ ARROW                : 5
 BANG                 : 
 BANG_EQUAL           : 31
 CLASS                : 
-COMMA                : 6 38
-DOT                  : 
-ELSE                 : 19 42
+COMMA                : 6 40
+DOT                  : 37 38
+ELSE                 : 19 44
 EOF                  : 
-EQUAL                : 44 45 46
+EQUAL                : 46 47 48
 EQUAL_EQUAL          : 30
 FALSE                : 
 FN                   : 4 5
 FOR                  : 
 GREATER              : 28
 GREATER_EQUAL        : 29
-IDENTIFIER           : 4 5 6 7 37 41 44 45 46
-IF                   : 18 19 42
-LEFT_BRACE           : 4 17 18 19 19 43
+IDENTIFIER           : 4 5 6 7 37 38 39 43 46 47 48
+IF                   : 18 19 44
+LEFT_BRACE           : 4 17 18 19 19 45
 LEFT_BRACKET         : 36
-LEFT_PAREN           : 4 5 32 37
+LEFT_PAREN           : 4 5 32 38 39
 LESS                 : 26
 LESS_EQUAL           : 27
-LET                  : 44 45
+LET                  : 46 47
 MINUS                : 23
-MUT                  : 45
+MUT                  : 47
 NIL                  : 34
 NUMBER               : 33
 OR                   : 
@@ -101,10 +102,10 @@ PLUS                 : 22
 PRINT                : 20
 PRINTLN              : 21
 RETURN               : 
-RIGHT_BRACE          : 4 17 18 19 19 43
+RIGHT_BRACE          : 4 17 18 19 19 45
 RIGHT_BRACKET        : 36
-RIGHT_PAREN          : 4 5 32 37
-SEMICOLON            : 20 21 44 45 46
+RIGHT_PAREN          : 4 5 32 38 39
+SEMICOLON            : 20 21 46 47 48
 SLASH                : 25
 STAR                 : 24
 STRING               : 35
@@ -119,16 +120,16 @@ Nonterminals, with rules where they appear
 assign               : 13
 condition            : 15
 declaration          : 12
-empty                : 8 40
-expr                 : 5 11 17 18 19 20 21 22 22 23 23 24 24 25 25 26 26 27 27 28 28 29 29 30 30 31 31 32 38 39 42 42 42 44 45 46
-expr_list_comma      : 36 37 38
+empty                : 8 42
+expr                 : 5 11 17 18 19 20 21 22 22 23 23 24 24 25 25 26 26 27 27 28 28 29 29 30 30 31 31 32 37 38 40 41 44 44 44 46 47 48
+expr_list_comma      : 36 38 39 40
 fn_def               : 2 3
 fn_def_list          : 1 2
 param_list           : 4 5 6
 print                : 14
 prog                 : 0
 stmt                 : 9 10
-stmt_list            : 4 9 17 18 19 19 43
+stmt_list            : 4 9 17 18 19 19 45
 while                : 16
 
 Parsing method: LALR
@@ -206,10 +207,10 @@ state 7
     (6) param_list -> . IDENTIFIER COMMA param_list
     (7) param_list -> . IDENTIFIER
     (8) param_list -> . empty
-    (47) empty -> .
+    (49) empty -> .
 
     IDENTIFIER      shift and go to state 8
-    RIGHT_PAREN     reduce using rule 47 (empty -> .)
+    RIGHT_PAREN     reduce using rule 49 (empty -> .)
 
     param_list                     shift and go to state 9
     empty                          shift and go to state 10
@@ -244,10 +245,10 @@ state 11
     (6) param_list -> . IDENTIFIER COMMA param_list
     (7) param_list -> . IDENTIFIER
     (8) param_list -> . empty
-    (47) empty -> .
+    (49) empty -> .
 
     IDENTIFIER      shift and go to state 8
-    RIGHT_PAREN     reduce using rule 47 (empty -> .)
+    RIGHT_PAREN     reduce using rule 49 (empty -> .)
 
     param_list                     shift and go to state 13
     empty                          shift and go to state 10
@@ -294,13 +295,15 @@ state 14
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
-    (44) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
-    (45) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
-    (46) assign -> . IDENTIFIER EQUAL expr SEMICOLON
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (46) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
+    (47) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
+    (48) assign -> . IDENTIFIER EQUAL expr SEMICOLON
     (20) print -> . PRINT expr SEMICOLON
     (21) print -> . PRINTLN expr SEMICOLON
     (18) condition -> . IF expr LEFT_BRACE stmt_list RIGHT_BRACE
@@ -347,10 +350,12 @@ state 15
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -364,37 +369,38 @@ state 15
 
 state 16
 
-    (37) expr -> IDENTIFIER . LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> IDENTIFIER .
-    (46) assign -> IDENTIFIER . EQUAL expr SEMICOLON
+    (39) expr -> IDENTIFIER . LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> IDENTIFIER .
+    (48) assign -> IDENTIFIER . EQUAL expr SEMICOLON
 
   ! shift/reduce conflict for LEFT_PAREN resolved as shift
     LEFT_PAREN      shift and go to state 38
-    PLUS            reduce using rule 41 (expr -> IDENTIFIER .)
-    MINUS           reduce using rule 41 (expr -> IDENTIFIER .)
-    STAR            reduce using rule 41 (expr -> IDENTIFIER .)
-    SLASH           reduce using rule 41 (expr -> IDENTIFIER .)
-    LESS            reduce using rule 41 (expr -> IDENTIFIER .)
-    LESS_EQUAL      reduce using rule 41 (expr -> IDENTIFIER .)
-    GREATER         reduce using rule 41 (expr -> IDENTIFIER .)
-    GREATER_EQUAL   reduce using rule 41 (expr -> IDENTIFIER .)
-    EQUAL_EQUAL     reduce using rule 41 (expr -> IDENTIFIER .)
-    BANG_EQUAL      reduce using rule 41 (expr -> IDENTIFIER .)
-    IF              reduce using rule 41 (expr -> IDENTIFIER .)
-    NUMBER          reduce using rule 41 (expr -> IDENTIFIER .)
-    NIL             reduce using rule 41 (expr -> IDENTIFIER .)
-    STRING          reduce using rule 41 (expr -> IDENTIFIER .)
-    LEFT_BRACKET    reduce using rule 41 (expr -> IDENTIFIER .)
-    IDENTIFIER      reduce using rule 41 (expr -> IDENTIFIER .)
-    LEFT_BRACE      reduce using rule 41 (expr -> IDENTIFIER .)
-    LET             reduce using rule 41 (expr -> IDENTIFIER .)
-    PRINT           reduce using rule 41 (expr -> IDENTIFIER .)
-    PRINTLN         reduce using rule 41 (expr -> IDENTIFIER .)
-    WHILE           reduce using rule 41 (expr -> IDENTIFIER .)
-    RIGHT_BRACE     reduce using rule 41 (expr -> IDENTIFIER .)
+    PLUS            reduce using rule 43 (expr -> IDENTIFIER .)
+    MINUS           reduce using rule 43 (expr -> IDENTIFIER .)
+    STAR            reduce using rule 43 (expr -> IDENTIFIER .)
+    SLASH           reduce using rule 43 (expr -> IDENTIFIER .)
+    LESS            reduce using rule 43 (expr -> IDENTIFIER .)
+    LESS_EQUAL      reduce using rule 43 (expr -> IDENTIFIER .)
+    GREATER         reduce using rule 43 (expr -> IDENTIFIER .)
+    GREATER_EQUAL   reduce using rule 43 (expr -> IDENTIFIER .)
+    EQUAL_EQUAL     reduce using rule 43 (expr -> IDENTIFIER .)
+    BANG_EQUAL      reduce using rule 43 (expr -> IDENTIFIER .)
+    DOT             reduce using rule 43 (expr -> IDENTIFIER .)
+    IF              reduce using rule 43 (expr -> IDENTIFIER .)
+    NUMBER          reduce using rule 43 (expr -> IDENTIFIER .)
+    NIL             reduce using rule 43 (expr -> IDENTIFIER .)
+    STRING          reduce using rule 43 (expr -> IDENTIFIER .)
+    LEFT_BRACKET    reduce using rule 43 (expr -> IDENTIFIER .)
+    IDENTIFIER      reduce using rule 43 (expr -> IDENTIFIER .)
+    LEFT_BRACE      reduce using rule 43 (expr -> IDENTIFIER .)
+    LET             reduce using rule 43 (expr -> IDENTIFIER .)
+    PRINT           reduce using rule 43 (expr -> IDENTIFIER .)
+    PRINTLN         reduce using rule 43 (expr -> IDENTIFIER .)
+    WHILE           reduce using rule 43 (expr -> IDENTIFIER .)
+    RIGHT_BRACE     reduce using rule 43 (expr -> IDENTIFIER .)
     EQUAL           shift and go to state 39
 
-  ! LEFT_PAREN      [ reduce using rule 41 (expr -> IDENTIFIER .) ]
+  ! LEFT_PAREN      [ reduce using rule 43 (expr -> IDENTIFIER .) ]
 
 
 state 17
@@ -415,10 +421,12 @@ state 17
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -432,7 +440,7 @@ state 17
 
 state 18
 
-    (43) expr -> LEFT_BRACE . stmt_list RIGHT_BRACE
+    (45) expr -> LEFT_BRACE . stmt_list RIGHT_BRACE
     (9) stmt_list -> . stmt stmt_list
     (10) stmt_list -> . stmt
     (11) stmt -> . expr
@@ -456,13 +464,15 @@ state 18
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
-    (44) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
-    (45) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
-    (46) assign -> . IDENTIFIER EQUAL expr SEMICOLON
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (46) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
+    (47) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
+    (48) assign -> . IDENTIFIER EQUAL expr SEMICOLON
     (20) print -> . PRINT expr SEMICOLON
     (21) print -> . PRINTLN expr SEMICOLON
     (18) condition -> . IF expr LEFT_BRACE stmt_list RIGHT_BRACE
@@ -525,13 +535,15 @@ state 20
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
-    (44) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
-    (45) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
-    (46) assign -> . IDENTIFIER EQUAL expr SEMICOLON
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (46) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
+    (47) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
+    (48) assign -> . IDENTIFIER EQUAL expr SEMICOLON
     (20) print -> . PRINT expr SEMICOLON
     (21) print -> . PRINTLN expr SEMICOLON
     (18) condition -> . IF expr LEFT_BRACE stmt_list RIGHT_BRACE
@@ -574,7 +586,9 @@ state 21
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for IF resolved as shift
     LEFT_PAREN      reduce using rule 11 (stmt -> expr .)
@@ -599,7 +613,8 @@ state 21
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
   ! IF              [ reduce using rule 11 (stmt -> expr .) ]
 
@@ -713,6 +728,7 @@ state 27
     GREATER_EQUAL   reduce using rule 33 (expr -> NUMBER .)
     EQUAL_EQUAL     reduce using rule 33 (expr -> NUMBER .)
     BANG_EQUAL      reduce using rule 33 (expr -> NUMBER .)
+    DOT             reduce using rule 33 (expr -> NUMBER .)
     IF              reduce using rule 33 (expr -> NUMBER .)
     LEFT_PAREN      reduce using rule 33 (expr -> NUMBER .)
     NUMBER          reduce using rule 33 (expr -> NUMBER .)
@@ -749,6 +765,7 @@ state 28
     GREATER_EQUAL   reduce using rule 34 (expr -> NIL .)
     EQUAL_EQUAL     reduce using rule 34 (expr -> NIL .)
     BANG_EQUAL      reduce using rule 34 (expr -> NIL .)
+    DOT             reduce using rule 34 (expr -> NIL .)
     IF              reduce using rule 34 (expr -> NIL .)
     LEFT_PAREN      reduce using rule 34 (expr -> NIL .)
     NUMBER          reduce using rule 34 (expr -> NIL .)
@@ -785,6 +802,7 @@ state 29
     GREATER_EQUAL   reduce using rule 35 (expr -> STRING .)
     EQUAL_EQUAL     reduce using rule 35 (expr -> STRING .)
     BANG_EQUAL      reduce using rule 35 (expr -> STRING .)
+    DOT             reduce using rule 35 (expr -> STRING .)
     IF              reduce using rule 35 (expr -> STRING .)
     LEFT_PAREN      reduce using rule 35 (expr -> STRING .)
     NUMBER          reduce using rule 35 (expr -> STRING .)
@@ -810,9 +828,9 @@ state 29
 state 30
 
     (36) expr -> LEFT_BRACKET . expr_list_comma RIGHT_BRACKET
-    (38) expr_list_comma -> . expr COMMA expr_list_comma
-    (39) expr_list_comma -> . expr
-    (40) expr_list_comma -> . empty
+    (40) expr_list_comma -> . expr COMMA expr_list_comma
+    (41) expr_list_comma -> . expr
+    (42) expr_list_comma -> . empty
     (22) expr -> . expr PLUS expr
     (23) expr -> . expr MINUS expr
     (24) expr -> . expr STAR expr
@@ -828,11 +846,13 @@ state 30
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
-    (47) empty -> .
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (49) empty -> .
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -841,11 +861,11 @@ state 30
     LEFT_BRACKET    shift and go to state 30
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
-    RIGHT_BRACKET   reduce using rule 47 (empty -> .)
+    RIGHT_BRACKET   reduce using rule 49 (empty -> .)
 
-    expr_list_comma                shift and go to state 55
-    expr                           shift and go to state 56
-    empty                          shift and go to state 57
+    expr_list_comma                shift and go to state 56
+    expr                           shift and go to state 57
+    empty                          shift and go to state 58
 
 state 31
 
@@ -866,10 +886,12 @@ state 31
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -879,15 +901,15 @@ state 31
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 58
+    expr                           shift and go to state 59
 
 state 32
 
-    (44) declaration -> LET . IDENTIFIER EQUAL expr SEMICOLON
-    (45) declaration -> LET . MUT IDENTIFIER EQUAL expr SEMICOLON
+    (46) declaration -> LET . IDENTIFIER EQUAL expr SEMICOLON
+    (47) declaration -> LET . MUT IDENTIFIER EQUAL expr SEMICOLON
 
-    IDENTIFIER      shift and go to state 59
-    MUT             shift and go to state 60
+    IDENTIFIER      shift and go to state 60
+    MUT             shift and go to state 61
 
 
 state 33
@@ -908,10 +930,12 @@ state 33
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -921,7 +945,7 @@ state 33
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 61
+    expr                           shift and go to state 62
 
 state 34
 
@@ -941,10 +965,12 @@ state 34
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -954,7 +980,7 @@ state 34
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 62
+    expr                           shift and go to state 63
 
 state 35
 
@@ -974,10 +1000,12 @@ state 35
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -987,46 +1015,47 @@ state 35
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 63
+    expr                           shift and go to state 64
 
 state 36
 
-    (37) expr -> IDENTIFIER . LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> IDENTIFIER .
+    (39) expr -> IDENTIFIER . LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> IDENTIFIER .
 
   ! shift/reduce conflict for LEFT_PAREN resolved as shift
     LEFT_PAREN      shift and go to state 38
-    PLUS            reduce using rule 41 (expr -> IDENTIFIER .)
-    MINUS           reduce using rule 41 (expr -> IDENTIFIER .)
-    STAR            reduce using rule 41 (expr -> IDENTIFIER .)
-    SLASH           reduce using rule 41 (expr -> IDENTIFIER .)
-    LESS            reduce using rule 41 (expr -> IDENTIFIER .)
-    LESS_EQUAL      reduce using rule 41 (expr -> IDENTIFIER .)
-    GREATER         reduce using rule 41 (expr -> IDENTIFIER .)
-    GREATER_EQUAL   reduce using rule 41 (expr -> IDENTIFIER .)
-    EQUAL_EQUAL     reduce using rule 41 (expr -> IDENTIFIER .)
-    BANG_EQUAL      reduce using rule 41 (expr -> IDENTIFIER .)
-    IF              reduce using rule 41 (expr -> IDENTIFIER .)
-    FN              reduce using rule 41 (expr -> IDENTIFIER .)
-    $end            reduce using rule 41 (expr -> IDENTIFIER .)
-    RIGHT_PAREN     reduce using rule 41 (expr -> IDENTIFIER .)
-    COMMA           reduce using rule 41 (expr -> IDENTIFIER .)
-    RIGHT_BRACKET   reduce using rule 41 (expr -> IDENTIFIER .)
-    LEFT_BRACE      reduce using rule 41 (expr -> IDENTIFIER .)
-    SEMICOLON       reduce using rule 41 (expr -> IDENTIFIER .)
-    NUMBER          reduce using rule 41 (expr -> IDENTIFIER .)
-    NIL             reduce using rule 41 (expr -> IDENTIFIER .)
-    STRING          reduce using rule 41 (expr -> IDENTIFIER .)
-    LEFT_BRACKET    reduce using rule 41 (expr -> IDENTIFIER .)
-    IDENTIFIER      reduce using rule 41 (expr -> IDENTIFIER .)
-    LET             reduce using rule 41 (expr -> IDENTIFIER .)
-    PRINT           reduce using rule 41 (expr -> IDENTIFIER .)
-    PRINTLN         reduce using rule 41 (expr -> IDENTIFIER .)
-    WHILE           reduce using rule 41 (expr -> IDENTIFIER .)
-    RIGHT_BRACE     reduce using rule 41 (expr -> IDENTIFIER .)
-    ELSE            reduce using rule 41 (expr -> IDENTIFIER .)
+    PLUS            reduce using rule 43 (expr -> IDENTIFIER .)
+    MINUS           reduce using rule 43 (expr -> IDENTIFIER .)
+    STAR            reduce using rule 43 (expr -> IDENTIFIER .)
+    SLASH           reduce using rule 43 (expr -> IDENTIFIER .)
+    LESS            reduce using rule 43 (expr -> IDENTIFIER .)
+    LESS_EQUAL      reduce using rule 43 (expr -> IDENTIFIER .)
+    GREATER         reduce using rule 43 (expr -> IDENTIFIER .)
+    GREATER_EQUAL   reduce using rule 43 (expr -> IDENTIFIER .)
+    EQUAL_EQUAL     reduce using rule 43 (expr -> IDENTIFIER .)
+    BANG_EQUAL      reduce using rule 43 (expr -> IDENTIFIER .)
+    DOT             reduce using rule 43 (expr -> IDENTIFIER .)
+    IF              reduce using rule 43 (expr -> IDENTIFIER .)
+    FN              reduce using rule 43 (expr -> IDENTIFIER .)
+    $end            reduce using rule 43 (expr -> IDENTIFIER .)
+    RIGHT_PAREN     reduce using rule 43 (expr -> IDENTIFIER .)
+    COMMA           reduce using rule 43 (expr -> IDENTIFIER .)
+    RIGHT_BRACKET   reduce using rule 43 (expr -> IDENTIFIER .)
+    LEFT_BRACE      reduce using rule 43 (expr -> IDENTIFIER .)
+    SEMICOLON       reduce using rule 43 (expr -> IDENTIFIER .)
+    NUMBER          reduce using rule 43 (expr -> IDENTIFIER .)
+    NIL             reduce using rule 43 (expr -> IDENTIFIER .)
+    STRING          reduce using rule 43 (expr -> IDENTIFIER .)
+    LEFT_BRACKET    reduce using rule 43 (expr -> IDENTIFIER .)
+    IDENTIFIER      reduce using rule 43 (expr -> IDENTIFIER .)
+    LET             reduce using rule 43 (expr -> IDENTIFIER .)
+    PRINT           reduce using rule 43 (expr -> IDENTIFIER .)
+    PRINTLN         reduce using rule 43 (expr -> IDENTIFIER .)
+    WHILE           reduce using rule 43 (expr -> IDENTIFIER .)
+    RIGHT_BRACE     reduce using rule 43 (expr -> IDENTIFIER .)
+    ELSE            reduce using rule 43 (expr -> IDENTIFIER .)
 
-  ! LEFT_PAREN      [ reduce using rule 41 (expr -> IDENTIFIER .) ]
+  ! LEFT_PAREN      [ reduce using rule 43 (expr -> IDENTIFIER .) ]
 
 
 state 37
@@ -1042,7 +1071,9 @@ state 37
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
     FN              reduce using rule 5 (fn_def -> FN IDENTIFIER LEFT_PAREN param_list RIGHT_PAREN ARROW expr .)
     $end            reduce using rule 5 (fn_def -> FN IDENTIFIER LEFT_PAREN param_list RIGHT_PAREN ARROW expr .)
@@ -1056,15 +1087,16 @@ state 37
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
 
 state 38
 
-    (37) expr -> IDENTIFIER LEFT_PAREN . expr_list_comma RIGHT_PAREN
-    (38) expr_list_comma -> . expr COMMA expr_list_comma
-    (39) expr_list_comma -> . expr
-    (40) expr_list_comma -> . empty
+    (39) expr -> IDENTIFIER LEFT_PAREN . expr_list_comma RIGHT_PAREN
+    (40) expr_list_comma -> . expr COMMA expr_list_comma
+    (41) expr_list_comma -> . expr
+    (42) expr_list_comma -> . empty
     (22) expr -> . expr PLUS expr
     (23) expr -> . expr MINUS expr
     (24) expr -> . expr STAR expr
@@ -1080,11 +1112,13 @@ state 38
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
-    (47) empty -> .
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (49) empty -> .
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1093,15 +1127,15 @@ state 38
     LEFT_BRACKET    shift and go to state 30
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
-    RIGHT_PAREN     reduce using rule 47 (empty -> .)
+    RIGHT_PAREN     reduce using rule 49 (empty -> .)
 
-    expr_list_comma                shift and go to state 64
-    expr                           shift and go to state 56
-    empty                          shift and go to state 57
+    expr_list_comma                shift and go to state 65
+    expr                           shift and go to state 57
+    empty                          shift and go to state 58
 
 state 39
 
-    (46) assign -> IDENTIFIER EQUAL . expr SEMICOLON
+    (48) assign -> IDENTIFIER EQUAL . expr SEMICOLON
     (22) expr -> . expr PLUS expr
     (23) expr -> . expr MINUS expr
     (24) expr -> . expr STAR expr
@@ -1117,10 +1151,12 @@ state 39
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1130,7 +1166,7 @@ state 39
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 65
+    expr                           shift and go to state 66
 
 state 40
 
@@ -1145,9 +1181,11 @@ state 40
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
-    RIGHT_PAREN     shift and go to state 66
+    RIGHT_PAREN     shift and go to state 67
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
     STAR            shift and go to state 46
@@ -1158,14 +1196,15 @@ state 40
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
 
 state 41
 
-    (43) expr -> LEFT_BRACE stmt_list . RIGHT_BRACE
+    (45) expr -> LEFT_BRACE stmt_list . RIGHT_BRACE
 
-    RIGHT_BRACE     shift and go to state 67
+    RIGHT_BRACE     shift and go to state 68
 
 
 state 42
@@ -1201,10 +1240,12 @@ state 44
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1214,7 +1255,7 @@ state 44
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 68
+    expr                           shift and go to state 69
 
 state 45
 
@@ -1234,10 +1275,12 @@ state 45
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1247,7 +1290,7 @@ state 45
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 69
+    expr                           shift and go to state 70
 
 state 46
 
@@ -1267,10 +1310,12 @@ state 46
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1280,7 +1325,7 @@ state 46
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 70
+    expr                           shift and go to state 71
 
 state 47
 
@@ -1300,10 +1345,12 @@ state 47
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1313,7 +1360,7 @@ state 47
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 71
+    expr                           shift and go to state 72
 
 state 48
 
@@ -1333,10 +1380,12 @@ state 48
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1346,7 +1395,7 @@ state 48
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 72
+    expr                           shift and go to state 73
 
 state 49
 
@@ -1366,10 +1415,12 @@ state 49
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1379,7 +1430,7 @@ state 49
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 73
+    expr                           shift and go to state 74
 
 state 50
 
@@ -1399,10 +1450,12 @@ state 50
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1412,7 +1465,7 @@ state 50
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 74
+    expr                           shift and go to state 75
 
 state 51
 
@@ -1432,10 +1485,12 @@ state 51
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1445,7 +1500,7 @@ state 51
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 75
+    expr                           shift and go to state 76
 
 state 52
 
@@ -1465,10 +1520,12 @@ state 52
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1478,7 +1535,7 @@ state 52
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 76
+    expr                           shift and go to state 77
 
 state 53
 
@@ -1498,10 +1555,12 @@ state 53
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1511,11 +1570,19 @@ state 53
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 77
+    expr                           shift and go to state 78
 
 state 54
 
-    (42) expr -> expr IF . expr ELSE expr
+    (37) expr -> expr DOT . IDENTIFIER
+    (38) expr -> expr DOT . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+
+    IDENTIFIER      shift and go to state 79
+
+
+state 55
+
+    (44) expr -> expr IF . expr ELSE expr
     (22) expr -> . expr PLUS expr
     (23) expr -> . expr MINUS expr
     (24) expr -> . expr STAR expr
@@ -1531,10 +1598,12 @@ state 54
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -1544,19 +1613,19 @@ state 54
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 78
-
-state 55
-
-    (36) expr -> LEFT_BRACKET expr_list_comma . RIGHT_BRACKET
-
-    RIGHT_BRACKET   shift and go to state 79
-
+    expr                           shift and go to state 80
 
 state 56
 
-    (38) expr_list_comma -> expr . COMMA expr_list_comma
-    (39) expr_list_comma -> expr .
+    (36) expr -> LEFT_BRACKET expr_list_comma . RIGHT_BRACKET
+
+    RIGHT_BRACKET   shift and go to state 81
+
+
+state 57
+
+    (40) expr_list_comma -> expr . COMMA expr_list_comma
+    (41) expr_list_comma -> expr .
     (22) expr -> expr . PLUS expr
     (23) expr -> expr . MINUS expr
     (24) expr -> expr . STAR expr
@@ -1567,11 +1636,13 @@ state 56
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
-    COMMA           shift and go to state 80
-    RIGHT_BRACKET   reduce using rule 39 (expr_list_comma -> expr .)
-    RIGHT_PAREN     reduce using rule 39 (expr_list_comma -> expr .)
+    COMMA           shift and go to state 82
+    RIGHT_BRACKET   reduce using rule 41 (expr_list_comma -> expr .)
+    RIGHT_PAREN     reduce using rule 41 (expr_list_comma -> expr .)
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
     STAR            shift and go to state 46
@@ -1582,18 +1653,19 @@ state 56
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
-
-
-state 57
-
-    (40) expr_list_comma -> empty .
-
-    RIGHT_BRACKET   reduce using rule 40 (expr_list_comma -> empty .)
-    RIGHT_PAREN     reduce using rule 40 (expr_list_comma -> empty .)
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
 
 state 58
+
+    (42) expr_list_comma -> empty .
+
+    RIGHT_BRACKET   reduce using rule 42 (expr_list_comma -> empty .)
+    RIGHT_PAREN     reduce using rule 42 (expr_list_comma -> empty .)
+
+
+state 59
 
     (18) condition -> IF expr . LEFT_BRACE stmt_list RIGHT_BRACE
     (19) condition -> IF expr . LEFT_BRACE stmt_list RIGHT_BRACE ELSE LEFT_BRACE stmt_list RIGHT_BRACE
@@ -1607,9 +1679,11 @@ state 58
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
-    LEFT_BRACE      shift and go to state 81
+    LEFT_BRACE      shift and go to state 83
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
     STAR            shift and go to state 46
@@ -1620,24 +1694,25 @@ state 58
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
-
-
-state 59
-
-    (44) declaration -> LET IDENTIFIER . EQUAL expr SEMICOLON
-
-    EQUAL           shift and go to state 82
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
 
 state 60
 
-    (45) declaration -> LET MUT . IDENTIFIER EQUAL expr SEMICOLON
+    (46) declaration -> LET IDENTIFIER . EQUAL expr SEMICOLON
 
-    IDENTIFIER      shift and go to state 83
+    EQUAL           shift and go to state 84
 
 
 state 61
+
+    (47) declaration -> LET MUT . IDENTIFIER EQUAL expr SEMICOLON
+
+    IDENTIFIER      shift and go to state 85
+
+
+state 62
 
     (20) print -> PRINT expr . SEMICOLON
     (22) expr -> expr . PLUS expr
@@ -1650,9 +1725,11 @@ state 61
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
-    SEMICOLON       shift and go to state 84
+    SEMICOLON       shift and go to state 86
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
     STAR            shift and go to state 46
@@ -1663,10 +1740,11 @@ state 61
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
 
-state 62
+state 63
 
     (21) print -> PRINTLN expr . SEMICOLON
     (22) expr -> expr . PLUS expr
@@ -1679,9 +1757,11 @@ state 62
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
-    SEMICOLON       shift and go to state 85
+    SEMICOLON       shift and go to state 87
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
     STAR            shift and go to state 46
@@ -1692,10 +1772,11 @@ state 62
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
 
-state 63
+state 64
 
     (17) while -> WHILE expr . LEFT_BRACE stmt_list RIGHT_BRACE
     (22) expr -> expr . PLUS expr
@@ -1708,9 +1789,11 @@ state 63
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
-    LEFT_BRACE      shift and go to state 86
+    LEFT_BRACE      shift and go to state 88
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
     STAR            shift and go to state 46
@@ -1721,19 +1804,20 @@ state 63
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
-
-
-state 64
-
-    (37) expr -> IDENTIFIER LEFT_PAREN expr_list_comma . RIGHT_PAREN
-
-    RIGHT_PAREN     shift and go to state 87
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
 
 state 65
 
-    (46) assign -> IDENTIFIER EQUAL expr . SEMICOLON
+    (39) expr -> IDENTIFIER LEFT_PAREN expr_list_comma . RIGHT_PAREN
+
+    RIGHT_PAREN     shift and go to state 89
+
+
+state 66
+
+    (48) assign -> IDENTIFIER EQUAL expr . SEMICOLON
     (22) expr -> expr . PLUS expr
     (23) expr -> expr . MINUS expr
     (24) expr -> expr . STAR expr
@@ -1744,9 +1828,11 @@ state 65
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
-    SEMICOLON       shift and go to state 88
+    SEMICOLON       shift and go to state 90
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
     STAR            shift and go to state 46
@@ -1757,10 +1843,11 @@ state 65
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
 
-state 66
+state 67
 
     (32) expr -> LEFT_PAREN expr RIGHT_PAREN .
 
@@ -1774,6 +1861,7 @@ state 66
     GREATER_EQUAL   reduce using rule 32 (expr -> LEFT_PAREN expr RIGHT_PAREN .)
     EQUAL_EQUAL     reduce using rule 32 (expr -> LEFT_PAREN expr RIGHT_PAREN .)
     BANG_EQUAL      reduce using rule 32 (expr -> LEFT_PAREN expr RIGHT_PAREN .)
+    DOT             reduce using rule 32 (expr -> LEFT_PAREN expr RIGHT_PAREN .)
     IF              reduce using rule 32 (expr -> LEFT_PAREN expr RIGHT_PAREN .)
     LEFT_PAREN      reduce using rule 32 (expr -> LEFT_PAREN expr RIGHT_PAREN .)
     NUMBER          reduce using rule 32 (expr -> LEFT_PAREN expr RIGHT_PAREN .)
@@ -1796,43 +1884,44 @@ state 66
     ELSE            reduce using rule 32 (expr -> LEFT_PAREN expr RIGHT_PAREN .)
 
 
-state 67
-
-    (43) expr -> LEFT_BRACE stmt_list RIGHT_BRACE .
-
-    PLUS            reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    MINUS           reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    STAR            reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    SLASH           reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    LESS            reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    LESS_EQUAL      reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    GREATER         reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    GREATER_EQUAL   reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    EQUAL_EQUAL     reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    BANG_EQUAL      reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    IF              reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    LEFT_PAREN      reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    NUMBER          reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    NIL             reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    STRING          reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    LEFT_BRACKET    reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    IDENTIFIER      reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    LEFT_BRACE      reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    LET             reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    PRINT           reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    PRINTLN         reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    WHILE           reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    RIGHT_BRACE     reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    FN              reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    $end            reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    RIGHT_PAREN     reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    COMMA           reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    RIGHT_BRACKET   reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    SEMICOLON       reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-    ELSE            reduce using rule 43 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
-
-
 state 68
+
+    (45) expr -> LEFT_BRACE stmt_list RIGHT_BRACE .
+
+    PLUS            reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    MINUS           reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    STAR            reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    SLASH           reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    LESS            reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    LESS_EQUAL      reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    GREATER         reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    GREATER_EQUAL   reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    EQUAL_EQUAL     reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    BANG_EQUAL      reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    DOT             reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    IF              reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    LEFT_PAREN      reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    NUMBER          reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    NIL             reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    STRING          reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    LEFT_BRACKET    reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    IDENTIFIER      reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    LEFT_BRACE      reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    LET             reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    PRINT           reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    PRINTLN         reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    WHILE           reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    RIGHT_BRACE     reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    FN              reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    $end            reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    RIGHT_PAREN     reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    COMMA           reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    RIGHT_BRACKET   reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    SEMICOLON       reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+    ELSE            reduce using rule 45 (expr -> LEFT_BRACE stmt_list RIGHT_BRACE .)
+
+
+state 69
 
     (22) expr -> expr PLUS expr .
     (22) expr -> expr . PLUS expr
@@ -1845,7 +1934,9 @@ state 68
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -1857,6 +1948,7 @@ state 68
   ! shift/reduce conflict for GREATER_EQUAL resolved as shift
   ! shift/reduce conflict for EQUAL_EQUAL resolved as shift
   ! shift/reduce conflict for BANG_EQUAL resolved as shift
+  ! shift/reduce conflict for DOT resolved as shift
   ! shift/reduce conflict for IF resolved as shift
     LEFT_PAREN      reduce using rule 22 (expr -> expr PLUS expr .)
     NUMBER          reduce using rule 22 (expr -> expr PLUS expr .)
@@ -1887,7 +1979,8 @@ state 68
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
   ! PLUS            [ reduce using rule 22 (expr -> expr PLUS expr .) ]
   ! MINUS           [ reduce using rule 22 (expr -> expr PLUS expr .) ]
@@ -1899,10 +1992,11 @@ state 68
   ! GREATER_EQUAL   [ reduce using rule 22 (expr -> expr PLUS expr .) ]
   ! EQUAL_EQUAL     [ reduce using rule 22 (expr -> expr PLUS expr .) ]
   ! BANG_EQUAL      [ reduce using rule 22 (expr -> expr PLUS expr .) ]
+  ! DOT             [ reduce using rule 22 (expr -> expr PLUS expr .) ]
   ! IF              [ reduce using rule 22 (expr -> expr PLUS expr .) ]
 
 
-state 69
+state 70
 
     (23) expr -> expr MINUS expr .
     (22) expr -> expr . PLUS expr
@@ -1915,7 +2009,9 @@ state 69
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -1927,6 +2023,7 @@ state 69
   ! shift/reduce conflict for GREATER_EQUAL resolved as shift
   ! shift/reduce conflict for EQUAL_EQUAL resolved as shift
   ! shift/reduce conflict for BANG_EQUAL resolved as shift
+  ! shift/reduce conflict for DOT resolved as shift
   ! shift/reduce conflict for IF resolved as shift
     LEFT_PAREN      reduce using rule 23 (expr -> expr MINUS expr .)
     NUMBER          reduce using rule 23 (expr -> expr MINUS expr .)
@@ -1957,7 +2054,8 @@ state 69
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
   ! PLUS            [ reduce using rule 23 (expr -> expr MINUS expr .) ]
   ! MINUS           [ reduce using rule 23 (expr -> expr MINUS expr .) ]
@@ -1969,10 +2067,11 @@ state 69
   ! GREATER_EQUAL   [ reduce using rule 23 (expr -> expr MINUS expr .) ]
   ! EQUAL_EQUAL     [ reduce using rule 23 (expr -> expr MINUS expr .) ]
   ! BANG_EQUAL      [ reduce using rule 23 (expr -> expr MINUS expr .) ]
+  ! DOT             [ reduce using rule 23 (expr -> expr MINUS expr .) ]
   ! IF              [ reduce using rule 23 (expr -> expr MINUS expr .) ]
 
 
-state 70
+state 71
 
     (24) expr -> expr STAR expr .
     (22) expr -> expr . PLUS expr
@@ -1985,7 +2084,9 @@ state 70
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -1997,6 +2098,7 @@ state 70
   ! shift/reduce conflict for GREATER_EQUAL resolved as shift
   ! shift/reduce conflict for EQUAL_EQUAL resolved as shift
   ! shift/reduce conflict for BANG_EQUAL resolved as shift
+  ! shift/reduce conflict for DOT resolved as shift
   ! shift/reduce conflict for IF resolved as shift
     LEFT_PAREN      reduce using rule 24 (expr -> expr STAR expr .)
     NUMBER          reduce using rule 24 (expr -> expr STAR expr .)
@@ -2027,7 +2129,8 @@ state 70
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
   ! PLUS            [ reduce using rule 24 (expr -> expr STAR expr .) ]
   ! MINUS           [ reduce using rule 24 (expr -> expr STAR expr .) ]
@@ -2039,10 +2142,11 @@ state 70
   ! GREATER_EQUAL   [ reduce using rule 24 (expr -> expr STAR expr .) ]
   ! EQUAL_EQUAL     [ reduce using rule 24 (expr -> expr STAR expr .) ]
   ! BANG_EQUAL      [ reduce using rule 24 (expr -> expr STAR expr .) ]
+  ! DOT             [ reduce using rule 24 (expr -> expr STAR expr .) ]
   ! IF              [ reduce using rule 24 (expr -> expr STAR expr .) ]
 
 
-state 71
+state 72
 
     (25) expr -> expr SLASH expr .
     (22) expr -> expr . PLUS expr
@@ -2055,7 +2159,9 @@ state 71
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -2067,6 +2173,7 @@ state 71
   ! shift/reduce conflict for GREATER_EQUAL resolved as shift
   ! shift/reduce conflict for EQUAL_EQUAL resolved as shift
   ! shift/reduce conflict for BANG_EQUAL resolved as shift
+  ! shift/reduce conflict for DOT resolved as shift
   ! shift/reduce conflict for IF resolved as shift
     LEFT_PAREN      reduce using rule 25 (expr -> expr SLASH expr .)
     NUMBER          reduce using rule 25 (expr -> expr SLASH expr .)
@@ -2097,7 +2204,8 @@ state 71
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
   ! PLUS            [ reduce using rule 25 (expr -> expr SLASH expr .) ]
   ! MINUS           [ reduce using rule 25 (expr -> expr SLASH expr .) ]
@@ -2109,10 +2217,11 @@ state 71
   ! GREATER_EQUAL   [ reduce using rule 25 (expr -> expr SLASH expr .) ]
   ! EQUAL_EQUAL     [ reduce using rule 25 (expr -> expr SLASH expr .) ]
   ! BANG_EQUAL      [ reduce using rule 25 (expr -> expr SLASH expr .) ]
+  ! DOT             [ reduce using rule 25 (expr -> expr SLASH expr .) ]
   ! IF              [ reduce using rule 25 (expr -> expr SLASH expr .) ]
 
 
-state 72
+state 73
 
     (26) expr -> expr LESS expr .
     (22) expr -> expr . PLUS expr
@@ -2125,7 +2234,9 @@ state 72
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -2137,6 +2248,7 @@ state 72
   ! shift/reduce conflict for GREATER_EQUAL resolved as shift
   ! shift/reduce conflict for EQUAL_EQUAL resolved as shift
   ! shift/reduce conflict for BANG_EQUAL resolved as shift
+  ! shift/reduce conflict for DOT resolved as shift
   ! shift/reduce conflict for IF resolved as shift
     LEFT_PAREN      reduce using rule 26 (expr -> expr LESS expr .)
     NUMBER          reduce using rule 26 (expr -> expr LESS expr .)
@@ -2167,7 +2279,8 @@ state 72
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
   ! PLUS            [ reduce using rule 26 (expr -> expr LESS expr .) ]
   ! MINUS           [ reduce using rule 26 (expr -> expr LESS expr .) ]
@@ -2179,10 +2292,11 @@ state 72
   ! GREATER_EQUAL   [ reduce using rule 26 (expr -> expr LESS expr .) ]
   ! EQUAL_EQUAL     [ reduce using rule 26 (expr -> expr LESS expr .) ]
   ! BANG_EQUAL      [ reduce using rule 26 (expr -> expr LESS expr .) ]
+  ! DOT             [ reduce using rule 26 (expr -> expr LESS expr .) ]
   ! IF              [ reduce using rule 26 (expr -> expr LESS expr .) ]
 
 
-state 73
+state 74
 
     (27) expr -> expr LESS_EQUAL expr .
     (22) expr -> expr . PLUS expr
@@ -2195,7 +2309,9 @@ state 73
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -2207,6 +2323,7 @@ state 73
   ! shift/reduce conflict for GREATER_EQUAL resolved as shift
   ! shift/reduce conflict for EQUAL_EQUAL resolved as shift
   ! shift/reduce conflict for BANG_EQUAL resolved as shift
+  ! shift/reduce conflict for DOT resolved as shift
   ! shift/reduce conflict for IF resolved as shift
     LEFT_PAREN      reduce using rule 27 (expr -> expr LESS_EQUAL expr .)
     NUMBER          reduce using rule 27 (expr -> expr LESS_EQUAL expr .)
@@ -2237,7 +2354,8 @@ state 73
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
   ! PLUS            [ reduce using rule 27 (expr -> expr LESS_EQUAL expr .) ]
   ! MINUS           [ reduce using rule 27 (expr -> expr LESS_EQUAL expr .) ]
@@ -2249,10 +2367,11 @@ state 73
   ! GREATER_EQUAL   [ reduce using rule 27 (expr -> expr LESS_EQUAL expr .) ]
   ! EQUAL_EQUAL     [ reduce using rule 27 (expr -> expr LESS_EQUAL expr .) ]
   ! BANG_EQUAL      [ reduce using rule 27 (expr -> expr LESS_EQUAL expr .) ]
+  ! DOT             [ reduce using rule 27 (expr -> expr LESS_EQUAL expr .) ]
   ! IF              [ reduce using rule 27 (expr -> expr LESS_EQUAL expr .) ]
 
 
-state 74
+state 75
 
     (28) expr -> expr GREATER expr .
     (22) expr -> expr . PLUS expr
@@ -2265,7 +2384,9 @@ state 74
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -2277,6 +2398,7 @@ state 74
   ! shift/reduce conflict for GREATER_EQUAL resolved as shift
   ! shift/reduce conflict for EQUAL_EQUAL resolved as shift
   ! shift/reduce conflict for BANG_EQUAL resolved as shift
+  ! shift/reduce conflict for DOT resolved as shift
   ! shift/reduce conflict for IF resolved as shift
     LEFT_PAREN      reduce using rule 28 (expr -> expr GREATER expr .)
     NUMBER          reduce using rule 28 (expr -> expr GREATER expr .)
@@ -2307,7 +2429,8 @@ state 74
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
   ! PLUS            [ reduce using rule 28 (expr -> expr GREATER expr .) ]
   ! MINUS           [ reduce using rule 28 (expr -> expr GREATER expr .) ]
@@ -2319,10 +2442,11 @@ state 74
   ! GREATER_EQUAL   [ reduce using rule 28 (expr -> expr GREATER expr .) ]
   ! EQUAL_EQUAL     [ reduce using rule 28 (expr -> expr GREATER expr .) ]
   ! BANG_EQUAL      [ reduce using rule 28 (expr -> expr GREATER expr .) ]
+  ! DOT             [ reduce using rule 28 (expr -> expr GREATER expr .) ]
   ! IF              [ reduce using rule 28 (expr -> expr GREATER expr .) ]
 
 
-state 75
+state 76
 
     (29) expr -> expr GREATER_EQUAL expr .
     (22) expr -> expr . PLUS expr
@@ -2335,7 +2459,9 @@ state 75
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -2347,6 +2473,7 @@ state 75
   ! shift/reduce conflict for GREATER_EQUAL resolved as shift
   ! shift/reduce conflict for EQUAL_EQUAL resolved as shift
   ! shift/reduce conflict for BANG_EQUAL resolved as shift
+  ! shift/reduce conflict for DOT resolved as shift
   ! shift/reduce conflict for IF resolved as shift
     LEFT_PAREN      reduce using rule 29 (expr -> expr GREATER_EQUAL expr .)
     NUMBER          reduce using rule 29 (expr -> expr GREATER_EQUAL expr .)
@@ -2377,7 +2504,8 @@ state 75
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
   ! PLUS            [ reduce using rule 29 (expr -> expr GREATER_EQUAL expr .) ]
   ! MINUS           [ reduce using rule 29 (expr -> expr GREATER_EQUAL expr .) ]
@@ -2389,10 +2517,11 @@ state 75
   ! GREATER_EQUAL   [ reduce using rule 29 (expr -> expr GREATER_EQUAL expr .) ]
   ! EQUAL_EQUAL     [ reduce using rule 29 (expr -> expr GREATER_EQUAL expr .) ]
   ! BANG_EQUAL      [ reduce using rule 29 (expr -> expr GREATER_EQUAL expr .) ]
+  ! DOT             [ reduce using rule 29 (expr -> expr GREATER_EQUAL expr .) ]
   ! IF              [ reduce using rule 29 (expr -> expr GREATER_EQUAL expr .) ]
 
 
-state 76
+state 77
 
     (30) expr -> expr EQUAL_EQUAL expr .
     (22) expr -> expr . PLUS expr
@@ -2405,7 +2534,9 @@ state 76
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -2417,6 +2548,7 @@ state 76
   ! shift/reduce conflict for GREATER_EQUAL resolved as shift
   ! shift/reduce conflict for EQUAL_EQUAL resolved as shift
   ! shift/reduce conflict for BANG_EQUAL resolved as shift
+  ! shift/reduce conflict for DOT resolved as shift
   ! shift/reduce conflict for IF resolved as shift
     LEFT_PAREN      reduce using rule 30 (expr -> expr EQUAL_EQUAL expr .)
     NUMBER          reduce using rule 30 (expr -> expr EQUAL_EQUAL expr .)
@@ -2447,7 +2579,8 @@ state 76
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
   ! PLUS            [ reduce using rule 30 (expr -> expr EQUAL_EQUAL expr .) ]
   ! MINUS           [ reduce using rule 30 (expr -> expr EQUAL_EQUAL expr .) ]
@@ -2459,10 +2592,11 @@ state 76
   ! GREATER_EQUAL   [ reduce using rule 30 (expr -> expr EQUAL_EQUAL expr .) ]
   ! EQUAL_EQUAL     [ reduce using rule 30 (expr -> expr EQUAL_EQUAL expr .) ]
   ! BANG_EQUAL      [ reduce using rule 30 (expr -> expr EQUAL_EQUAL expr .) ]
+  ! DOT             [ reduce using rule 30 (expr -> expr EQUAL_EQUAL expr .) ]
   ! IF              [ reduce using rule 30 (expr -> expr EQUAL_EQUAL expr .) ]
 
 
-state 77
+state 78
 
     (31) expr -> expr BANG_EQUAL expr .
     (22) expr -> expr . PLUS expr
@@ -2475,7 +2609,9 @@ state 77
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -2487,6 +2623,7 @@ state 77
   ! shift/reduce conflict for GREATER_EQUAL resolved as shift
   ! shift/reduce conflict for EQUAL_EQUAL resolved as shift
   ! shift/reduce conflict for BANG_EQUAL resolved as shift
+  ! shift/reduce conflict for DOT resolved as shift
   ! shift/reduce conflict for IF resolved as shift
     LEFT_PAREN      reduce using rule 31 (expr -> expr BANG_EQUAL expr .)
     NUMBER          reduce using rule 31 (expr -> expr BANG_EQUAL expr .)
@@ -2517,7 +2654,8 @@ state 77
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
   ! PLUS            [ reduce using rule 31 (expr -> expr BANG_EQUAL expr .) ]
   ! MINUS           [ reduce using rule 31 (expr -> expr BANG_EQUAL expr .) ]
@@ -2529,12 +2667,54 @@ state 77
   ! GREATER_EQUAL   [ reduce using rule 31 (expr -> expr BANG_EQUAL expr .) ]
   ! EQUAL_EQUAL     [ reduce using rule 31 (expr -> expr BANG_EQUAL expr .) ]
   ! BANG_EQUAL      [ reduce using rule 31 (expr -> expr BANG_EQUAL expr .) ]
+  ! DOT             [ reduce using rule 31 (expr -> expr BANG_EQUAL expr .) ]
   ! IF              [ reduce using rule 31 (expr -> expr BANG_EQUAL expr .) ]
 
 
-state 78
+state 79
 
-    (42) expr -> expr IF expr . ELSE expr
+    (37) expr -> expr DOT IDENTIFIER .
+    (38) expr -> expr DOT IDENTIFIER . LEFT_PAREN expr_list_comma RIGHT_PAREN
+
+  ! shift/reduce conflict for LEFT_PAREN resolved as shift
+    PLUS            reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    MINUS           reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    STAR            reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    SLASH           reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    LESS            reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    LESS_EQUAL      reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    GREATER         reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    GREATER_EQUAL   reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    EQUAL_EQUAL     reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    BANG_EQUAL      reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    DOT             reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    IF              reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    NUMBER          reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    NIL             reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    STRING          reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    LEFT_BRACKET    reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    IDENTIFIER      reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    LEFT_BRACE      reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    LET             reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    PRINT           reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    PRINTLN         reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    WHILE           reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    RIGHT_BRACE     reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    FN              reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    $end            reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    RIGHT_PAREN     reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    COMMA           reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    RIGHT_BRACKET   reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    SEMICOLON       reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    ELSE            reduce using rule 37 (expr -> expr DOT IDENTIFIER .)
+    LEFT_PAREN      shift and go to state 91
+
+  ! LEFT_PAREN      [ reduce using rule 37 (expr -> expr DOT IDENTIFIER .) ]
+
+
+state 80
+
+    (44) expr -> expr IF expr . ELSE expr
     (22) expr -> expr . PLUS expr
     (23) expr -> expr . MINUS expr
     (24) expr -> expr . STAR expr
@@ -2545,9 +2725,11 @@ state 78
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
-    ELSE            shift and go to state 89
+    ELSE            shift and go to state 92
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
     STAR            shift and go to state 46
@@ -2558,10 +2740,11 @@ state 78
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
 
-state 79
+state 81
 
     (36) expr -> LEFT_BRACKET expr_list_comma RIGHT_BRACKET .
 
@@ -2575,6 +2758,7 @@ state 79
     GREATER_EQUAL   reduce using rule 36 (expr -> LEFT_BRACKET expr_list_comma RIGHT_BRACKET .)
     EQUAL_EQUAL     reduce using rule 36 (expr -> LEFT_BRACKET expr_list_comma RIGHT_BRACKET .)
     BANG_EQUAL      reduce using rule 36 (expr -> LEFT_BRACKET expr_list_comma RIGHT_BRACKET .)
+    DOT             reduce using rule 36 (expr -> LEFT_BRACKET expr_list_comma RIGHT_BRACKET .)
     IF              reduce using rule 36 (expr -> LEFT_BRACKET expr_list_comma RIGHT_BRACKET .)
     LEFT_PAREN      reduce using rule 36 (expr -> LEFT_BRACKET expr_list_comma RIGHT_BRACKET .)
     NUMBER          reduce using rule 36 (expr -> LEFT_BRACKET expr_list_comma RIGHT_BRACKET .)
@@ -2597,12 +2781,12 @@ state 79
     ELSE            reduce using rule 36 (expr -> LEFT_BRACKET expr_list_comma RIGHT_BRACKET .)
 
 
-state 80
+state 82
 
-    (38) expr_list_comma -> expr COMMA . expr_list_comma
-    (38) expr_list_comma -> . expr COMMA expr_list_comma
-    (39) expr_list_comma -> . expr
-    (40) expr_list_comma -> . empty
+    (40) expr_list_comma -> expr COMMA . expr_list_comma
+    (40) expr_list_comma -> . expr COMMA expr_list_comma
+    (41) expr_list_comma -> . expr
+    (42) expr_list_comma -> . empty
     (22) expr -> . expr PLUS expr
     (23) expr -> . expr MINUS expr
     (24) expr -> . expr STAR expr
@@ -2618,11 +2802,13 @@ state 80
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
-    (47) empty -> .
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (49) empty -> .
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -2631,14 +2817,14 @@ state 80
     LEFT_BRACKET    shift and go to state 30
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
-    RIGHT_BRACKET   reduce using rule 47 (empty -> .)
-    RIGHT_PAREN     reduce using rule 47 (empty -> .)
+    RIGHT_BRACKET   reduce using rule 49 (empty -> .)
+    RIGHT_PAREN     reduce using rule 49 (empty -> .)
 
-    expr                           shift and go to state 56
-    expr_list_comma                shift and go to state 90
-    empty                          shift and go to state 57
+    expr                           shift and go to state 57
+    expr_list_comma                shift and go to state 93
+    empty                          shift and go to state 58
 
-state 81
+state 83
 
     (18) condition -> IF expr LEFT_BRACE . stmt_list RIGHT_BRACE
     (19) condition -> IF expr LEFT_BRACE . stmt_list RIGHT_BRACE ELSE LEFT_BRACE stmt_list RIGHT_BRACE
@@ -2665,152 +2851,15 @@ state 81
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
-    (44) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
-    (45) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
-    (46) assign -> . IDENTIFIER EQUAL expr SEMICOLON
-    (20) print -> . PRINT expr SEMICOLON
-    (21) print -> . PRINTLN expr SEMICOLON
-    (18) condition -> . IF expr LEFT_BRACE stmt_list RIGHT_BRACE
-    (19) condition -> . IF expr LEFT_BRACE stmt_list RIGHT_BRACE ELSE LEFT_BRACE stmt_list RIGHT_BRACE
-    (17) while -> . WHILE expr LEFT_BRACE stmt_list RIGHT_BRACE
-
-    LEFT_PAREN      shift and go to state 17
-    NUMBER          shift and go to state 27
-    NIL             shift and go to state 28
-    STRING          shift and go to state 29
-    LEFT_BRACKET    shift and go to state 30
-    IDENTIFIER      shift and go to state 16
-    LEFT_BRACE      shift and go to state 18
-    LET             shift and go to state 32
-    PRINT           shift and go to state 33
-    PRINTLN         shift and go to state 34
-    IF              shift and go to state 31
-    WHILE           shift and go to state 35
-
-    expr                           shift and go to state 21
-    stmt_list                      shift and go to state 91
-    stmt                           shift and go to state 20
-    declaration                    shift and go to state 22
-    assign                         shift and go to state 23
-    print                          shift and go to state 24
-    condition                      shift and go to state 25
-    while                          shift and go to state 26
-
-state 82
-
-    (44) declaration -> LET IDENTIFIER EQUAL . expr SEMICOLON
-    (22) expr -> . expr PLUS expr
-    (23) expr -> . expr MINUS expr
-    (24) expr -> . expr STAR expr
-    (25) expr -> . expr SLASH expr
-    (26) expr -> . expr LESS expr
-    (27) expr -> . expr LESS_EQUAL expr
-    (28) expr -> . expr GREATER expr
-    (29) expr -> . expr GREATER_EQUAL expr
-    (30) expr -> . expr EQUAL_EQUAL expr
-    (31) expr -> . expr BANG_EQUAL expr
-    (32) expr -> . LEFT_PAREN expr RIGHT_PAREN
-    (33) expr -> . NUMBER
-    (34) expr -> . NIL
-    (35) expr -> . STRING
-    (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
-
-    LEFT_PAREN      shift and go to state 17
-    NUMBER          shift and go to state 27
-    NIL             shift and go to state 28
-    STRING          shift and go to state 29
-    LEFT_BRACKET    shift and go to state 30
-    IDENTIFIER      shift and go to state 36
-    LEFT_BRACE      shift and go to state 18
-
-    expr                           shift and go to state 92
-
-state 83
-
-    (45) declaration -> LET MUT IDENTIFIER . EQUAL expr SEMICOLON
-
-    EQUAL           shift and go to state 93
-
-
-state 84
-
-    (20) print -> PRINT expr SEMICOLON .
-
-    LEFT_PAREN      reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    NUMBER          reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    NIL             reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    STRING          reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    LEFT_BRACKET    reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    IDENTIFIER      reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    LEFT_BRACE      reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    LET             reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    PRINT           reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    PRINTLN         reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    IF              reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    WHILE           reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-    RIGHT_BRACE     reduce using rule 20 (print -> PRINT expr SEMICOLON .)
-
-
-state 85
-
-    (21) print -> PRINTLN expr SEMICOLON .
-
-    LEFT_PAREN      reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    NUMBER          reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    NIL             reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    STRING          reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    LEFT_BRACKET    reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    IDENTIFIER      reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    LEFT_BRACE      reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    LET             reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    PRINT           reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    PRINTLN         reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    IF              reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    WHILE           reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-    RIGHT_BRACE     reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
-
-
-state 86
-
-    (17) while -> WHILE expr LEFT_BRACE . stmt_list RIGHT_BRACE
-    (9) stmt_list -> . stmt stmt_list
-    (10) stmt_list -> . stmt
-    (11) stmt -> . expr
-    (12) stmt -> . declaration
-    (13) stmt -> . assign
-    (14) stmt -> . print
-    (15) stmt -> . condition
-    (16) stmt -> . while
-    (22) expr -> . expr PLUS expr
-    (23) expr -> . expr MINUS expr
-    (24) expr -> . expr STAR expr
-    (25) expr -> . expr SLASH expr
-    (26) expr -> . expr LESS expr
-    (27) expr -> . expr LESS_EQUAL expr
-    (28) expr -> . expr GREATER expr
-    (29) expr -> . expr GREATER_EQUAL expr
-    (30) expr -> . expr EQUAL_EQUAL expr
-    (31) expr -> . expr BANG_EQUAL expr
-    (32) expr -> . LEFT_PAREN expr RIGHT_PAREN
-    (33) expr -> . NUMBER
-    (34) expr -> . NIL
-    (35) expr -> . STRING
-    (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
-    (44) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
-    (45) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
-    (46) assign -> . IDENTIFIER EQUAL expr SEMICOLON
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (46) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
+    (47) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
+    (48) assign -> . IDENTIFIER EQUAL expr SEMICOLON
     (20) print -> . PRINT expr SEMICOLON
     (21) print -> . PRINTLN expr SEMICOLON
     (18) condition -> . IF expr LEFT_BRACE stmt_list RIGHT_BRACE
@@ -2839,64 +2888,9 @@ state 86
     condition                      shift and go to state 25
     while                          shift and go to state 26
 
-state 87
+state 84
 
-    (37) expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .
-
-    PLUS            reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    MINUS           reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    STAR            reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    SLASH           reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    LESS            reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    LESS_EQUAL      reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    GREATER         reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    GREATER_EQUAL   reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    EQUAL_EQUAL     reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    BANG_EQUAL      reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    IF              reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    LEFT_PAREN      reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    NUMBER          reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    NIL             reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    STRING          reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    LEFT_BRACKET    reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    IDENTIFIER      reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    LEFT_BRACE      reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    LET             reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    PRINT           reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    PRINTLN         reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    WHILE           reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    RIGHT_BRACE     reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    FN              reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    $end            reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    RIGHT_PAREN     reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    COMMA           reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    RIGHT_BRACKET   reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    SEMICOLON       reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-    ELSE            reduce using rule 37 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
-
-
-state 88
-
-    (46) assign -> IDENTIFIER EQUAL expr SEMICOLON .
-
-    LEFT_PAREN      reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    NUMBER          reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    NIL             reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    STRING          reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    LEFT_BRACKET    reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    IDENTIFIER      reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    LEFT_BRACE      reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    LET             reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    PRINT           reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    PRINTLN         reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    IF              reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    WHILE           reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-    RIGHT_BRACE     reduce using rule 46 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
-
-
-state 89
-
-    (42) expr -> expr IF expr ELSE . expr
+    (46) declaration -> LET IDENTIFIER EQUAL . expr SEMICOLON
     (22) expr -> . expr PLUS expr
     (23) expr -> . expr MINUS expr
     (24) expr -> . expr STAR expr
@@ -2912,10 +2906,12 @@ state 89
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -2927,54 +2923,62 @@ state 89
 
     expr                           shift and go to state 95
 
-state 90
+state 85
 
-    (38) expr_list_comma -> expr COMMA expr_list_comma .
+    (47) declaration -> LET MUT IDENTIFIER . EQUAL expr SEMICOLON
 
-    RIGHT_BRACKET   reduce using rule 38 (expr_list_comma -> expr COMMA expr_list_comma .)
-    RIGHT_PAREN     reduce using rule 38 (expr_list_comma -> expr COMMA expr_list_comma .)
-
-
-state 91
-
-    (18) condition -> IF expr LEFT_BRACE stmt_list . RIGHT_BRACE
-    (19) condition -> IF expr LEFT_BRACE stmt_list . RIGHT_BRACE ELSE LEFT_BRACE stmt_list RIGHT_BRACE
-
-    RIGHT_BRACE     shift and go to state 96
+    EQUAL           shift and go to state 96
 
 
-state 92
+state 86
 
-    (44) declaration -> LET IDENTIFIER EQUAL expr . SEMICOLON
-    (22) expr -> expr . PLUS expr
-    (23) expr -> expr . MINUS expr
-    (24) expr -> expr . STAR expr
-    (25) expr -> expr . SLASH expr
-    (26) expr -> expr . LESS expr
-    (27) expr -> expr . LESS_EQUAL expr
-    (28) expr -> expr . GREATER expr
-    (29) expr -> expr . GREATER_EQUAL expr
-    (30) expr -> expr . EQUAL_EQUAL expr
-    (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (20) print -> PRINT expr SEMICOLON .
 
-    SEMICOLON       shift and go to state 97
-    PLUS            shift and go to state 44
-    MINUS           shift and go to state 45
-    STAR            shift and go to state 46
-    SLASH           shift and go to state 47
-    LESS            shift and go to state 48
-    LESS_EQUAL      shift and go to state 49
-    GREATER         shift and go to state 50
-    GREATER_EQUAL   shift and go to state 51
-    EQUAL_EQUAL     shift and go to state 52
-    BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    LEFT_PAREN      reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    NUMBER          reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    NIL             reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    STRING          reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    LEFT_BRACKET    reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    IDENTIFIER      reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    LEFT_BRACE      reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    LET             reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    PRINT           reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    PRINTLN         reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    IF              reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    WHILE           reduce using rule 20 (print -> PRINT expr SEMICOLON .)
+    RIGHT_BRACE     reduce using rule 20 (print -> PRINT expr SEMICOLON .)
 
 
-state 93
+state 87
 
-    (45) declaration -> LET MUT IDENTIFIER EQUAL . expr SEMICOLON
+    (21) print -> PRINTLN expr SEMICOLON .
+
+    LEFT_PAREN      reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    NUMBER          reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    NIL             reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    STRING          reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    LEFT_BRACKET    reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    IDENTIFIER      reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    LEFT_BRACE      reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    LET             reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    PRINT           reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    PRINTLN         reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    IF              reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    WHILE           reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+    RIGHT_BRACE     reduce using rule 21 (print -> PRINTLN expr SEMICOLON .)
+
+
+state 88
+
+    (17) while -> WHILE expr LEFT_BRACE . stmt_list RIGHT_BRACE
+    (9) stmt_list -> . stmt stmt_list
+    (10) stmt_list -> . stmt
+    (11) stmt -> . expr
+    (12) stmt -> . declaration
+    (13) stmt -> . assign
+    (14) stmt -> . print
+    (15) stmt -> . condition
+    (16) stmt -> . while
     (22) expr -> . expr PLUS expr
     (23) expr -> . expr MINUS expr
     (24) expr -> . expr STAR expr
@@ -2990,10 +2994,165 @@ state 93
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (46) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
+    (47) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
+    (48) assign -> . IDENTIFIER EQUAL expr SEMICOLON
+    (20) print -> . PRINT expr SEMICOLON
+    (21) print -> . PRINTLN expr SEMICOLON
+    (18) condition -> . IF expr LEFT_BRACE stmt_list RIGHT_BRACE
+    (19) condition -> . IF expr LEFT_BRACE stmt_list RIGHT_BRACE ELSE LEFT_BRACE stmt_list RIGHT_BRACE
+    (17) while -> . WHILE expr LEFT_BRACE stmt_list RIGHT_BRACE
+
+    LEFT_PAREN      shift and go to state 17
+    NUMBER          shift and go to state 27
+    NIL             shift and go to state 28
+    STRING          shift and go to state 29
+    LEFT_BRACKET    shift and go to state 30
+    IDENTIFIER      shift and go to state 16
+    LEFT_BRACE      shift and go to state 18
+    LET             shift and go to state 32
+    PRINT           shift and go to state 33
+    PRINTLN         shift and go to state 34
+    IF              shift and go to state 31
+    WHILE           shift and go to state 35
+
+    expr                           shift and go to state 21
+    stmt_list                      shift and go to state 97
+    stmt                           shift and go to state 20
+    declaration                    shift and go to state 22
+    assign                         shift and go to state 23
+    print                          shift and go to state 24
+    condition                      shift and go to state 25
+    while                          shift and go to state 26
+
+state 89
+
+    (39) expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .
+
+    PLUS            reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    MINUS           reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    STAR            reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    SLASH           reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LESS            reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LESS_EQUAL      reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    GREATER         reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    GREATER_EQUAL   reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    EQUAL_EQUAL     reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    BANG_EQUAL      reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    DOT             reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    IF              reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LEFT_PAREN      reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    NUMBER          reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    NIL             reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    STRING          reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LEFT_BRACKET    reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    IDENTIFIER      reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LEFT_BRACE      reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LET             reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    PRINT           reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    PRINTLN         reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    WHILE           reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    RIGHT_BRACE     reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    FN              reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    $end            reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    RIGHT_PAREN     reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    COMMA           reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    RIGHT_BRACKET   reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    SEMICOLON       reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    ELSE            reduce using rule 39 (expr -> IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+
+
+state 90
+
+    (48) assign -> IDENTIFIER EQUAL expr SEMICOLON .
+
+    LEFT_PAREN      reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    NUMBER          reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    NIL             reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    STRING          reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    LEFT_BRACKET    reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    IDENTIFIER      reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    LEFT_BRACE      reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    LET             reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    PRINT           reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    PRINTLN         reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    IF              reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    WHILE           reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+    RIGHT_BRACE     reduce using rule 48 (assign -> IDENTIFIER EQUAL expr SEMICOLON .)
+
+
+state 91
+
+    (38) expr -> expr DOT IDENTIFIER LEFT_PAREN . expr_list_comma RIGHT_PAREN
+    (40) expr_list_comma -> . expr COMMA expr_list_comma
+    (41) expr_list_comma -> . expr
+    (42) expr_list_comma -> . empty
+    (22) expr -> . expr PLUS expr
+    (23) expr -> . expr MINUS expr
+    (24) expr -> . expr STAR expr
+    (25) expr -> . expr SLASH expr
+    (26) expr -> . expr LESS expr
+    (27) expr -> . expr LESS_EQUAL expr
+    (28) expr -> . expr GREATER expr
+    (29) expr -> . expr GREATER_EQUAL expr
+    (30) expr -> . expr EQUAL_EQUAL expr
+    (31) expr -> . expr BANG_EQUAL expr
+    (32) expr -> . LEFT_PAREN expr RIGHT_PAREN
+    (33) expr -> . NUMBER
+    (34) expr -> . NIL
+    (35) expr -> . STRING
+    (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (49) empty -> .
+
+    LEFT_PAREN      shift and go to state 17
+    NUMBER          shift and go to state 27
+    NIL             shift and go to state 28
+    STRING          shift and go to state 29
+    LEFT_BRACKET    shift and go to state 30
+    IDENTIFIER      shift and go to state 36
+    LEFT_BRACE      shift and go to state 18
+    RIGHT_PAREN     reduce using rule 49 (empty -> .)
+
+    expr                           shift and go to state 57
+    expr_list_comma                shift and go to state 98
+    empty                          shift and go to state 58
+
+state 92
+
+    (44) expr -> expr IF expr ELSE . expr
+    (22) expr -> . expr PLUS expr
+    (23) expr -> . expr MINUS expr
+    (24) expr -> . expr STAR expr
+    (25) expr -> . expr SLASH expr
+    (26) expr -> . expr LESS expr
+    (27) expr -> . expr LESS_EQUAL expr
+    (28) expr -> . expr GREATER expr
+    (29) expr -> . expr GREATER_EQUAL expr
+    (30) expr -> . expr EQUAL_EQUAL expr
+    (31) expr -> . expr BANG_EQUAL expr
+    (32) expr -> . LEFT_PAREN expr RIGHT_PAREN
+    (33) expr -> . NUMBER
+    (34) expr -> . NIL
+    (35) expr -> . STRING
+    (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
 
     LEFT_PAREN      shift and go to state 17
     NUMBER          shift and go to state 27
@@ -3003,18 +3162,27 @@ state 93
     IDENTIFIER      shift and go to state 36
     LEFT_BRACE      shift and go to state 18
 
-    expr                           shift and go to state 98
+    expr                           shift and go to state 99
+
+state 93
+
+    (40) expr_list_comma -> expr COMMA expr_list_comma .
+
+    RIGHT_BRACKET   reduce using rule 40 (expr_list_comma -> expr COMMA expr_list_comma .)
+    RIGHT_PAREN     reduce using rule 40 (expr_list_comma -> expr COMMA expr_list_comma .)
+
 
 state 94
 
-    (17) while -> WHILE expr LEFT_BRACE stmt_list . RIGHT_BRACE
+    (18) condition -> IF expr LEFT_BRACE stmt_list . RIGHT_BRACE
+    (19) condition -> IF expr LEFT_BRACE stmt_list . RIGHT_BRACE ELSE LEFT_BRACE stmt_list RIGHT_BRACE
 
-    RIGHT_BRACE     shift and go to state 99
+    RIGHT_BRACE     shift and go to state 100
 
 
 state 95
 
-    (42) expr -> expr IF expr ELSE expr .
+    (46) declaration -> LET IDENTIFIER EQUAL expr . SEMICOLON
     (22) expr -> expr . PLUS expr
     (23) expr -> expr . MINUS expr
     (24) expr -> expr . STAR expr
@@ -3025,7 +3193,90 @@ state 95
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
+
+    SEMICOLON       shift and go to state 101
+    PLUS            shift and go to state 44
+    MINUS           shift and go to state 45
+    STAR            shift and go to state 46
+    SLASH           shift and go to state 47
+    LESS            shift and go to state 48
+    LESS_EQUAL      shift and go to state 49
+    GREATER         shift and go to state 50
+    GREATER_EQUAL   shift and go to state 51
+    EQUAL_EQUAL     shift and go to state 52
+    BANG_EQUAL      shift and go to state 53
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
+
+
+state 96
+
+    (47) declaration -> LET MUT IDENTIFIER EQUAL . expr SEMICOLON
+    (22) expr -> . expr PLUS expr
+    (23) expr -> . expr MINUS expr
+    (24) expr -> . expr STAR expr
+    (25) expr -> . expr SLASH expr
+    (26) expr -> . expr LESS expr
+    (27) expr -> . expr LESS_EQUAL expr
+    (28) expr -> . expr GREATER expr
+    (29) expr -> . expr GREATER_EQUAL expr
+    (30) expr -> . expr EQUAL_EQUAL expr
+    (31) expr -> . expr BANG_EQUAL expr
+    (32) expr -> . LEFT_PAREN expr RIGHT_PAREN
+    (33) expr -> . NUMBER
+    (34) expr -> . NIL
+    (35) expr -> . STRING
+    (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+
+    LEFT_PAREN      shift and go to state 17
+    NUMBER          shift and go to state 27
+    NIL             shift and go to state 28
+    STRING          shift and go to state 29
+    LEFT_BRACKET    shift and go to state 30
+    IDENTIFIER      shift and go to state 36
+    LEFT_BRACE      shift and go to state 18
+
+    expr                           shift and go to state 102
+
+state 97
+
+    (17) while -> WHILE expr LEFT_BRACE stmt_list . RIGHT_BRACE
+
+    RIGHT_BRACE     shift and go to state 103
+
+
+state 98
+
+    (38) expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma . RIGHT_PAREN
+
+    RIGHT_PAREN     shift and go to state 104
+
+
+state 99
+
+    (44) expr -> expr IF expr ELSE expr .
+    (22) expr -> expr . PLUS expr
+    (23) expr -> expr . MINUS expr
+    (24) expr -> expr . STAR expr
+    (25) expr -> expr . SLASH expr
+    (26) expr -> expr . LESS expr
+    (27) expr -> expr . LESS_EQUAL expr
+    (28) expr -> expr . GREATER expr
+    (29) expr -> expr . GREATER_EQUAL expr
+    (30) expr -> expr . EQUAL_EQUAL expr
+    (31) expr -> expr . BANG_EQUAL expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINUS resolved as shift
@@ -3037,26 +3288,27 @@ state 95
   ! shift/reduce conflict for GREATER_EQUAL resolved as shift
   ! shift/reduce conflict for EQUAL_EQUAL resolved as shift
   ! shift/reduce conflict for BANG_EQUAL resolved as shift
+  ! shift/reduce conflict for DOT resolved as shift
   ! shift/reduce conflict for IF resolved as shift
-    LEFT_PAREN      reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    NUMBER          reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    NIL             reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    STRING          reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    LEFT_BRACKET    reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    IDENTIFIER      reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    LEFT_BRACE      reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    LET             reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    PRINT           reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    PRINTLN         reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    WHILE           reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    RIGHT_BRACE     reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    FN              reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    $end            reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    RIGHT_PAREN     reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    COMMA           reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    RIGHT_BRACKET   reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    SEMICOLON       reduce using rule 42 (expr -> expr IF expr ELSE expr .)
-    ELSE            reduce using rule 42 (expr -> expr IF expr ELSE expr .)
+    LEFT_PAREN      reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    NUMBER          reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    NIL             reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    STRING          reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    LEFT_BRACKET    reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    IDENTIFIER      reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    LEFT_BRACE      reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    LET             reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    PRINT           reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    PRINTLN         reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    WHILE           reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    RIGHT_BRACE     reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    FN              reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    $end            reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    RIGHT_PAREN     reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    COMMA           reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    RIGHT_BRACKET   reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    SEMICOLON       reduce using rule 44 (expr -> expr IF expr ELSE expr .)
+    ELSE            reduce using rule 44 (expr -> expr IF expr ELSE expr .)
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
     STAR            shift and go to state 46
@@ -3067,22 +3319,24 @@ state 95
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
-  ! PLUS            [ reduce using rule 42 (expr -> expr IF expr ELSE expr .) ]
-  ! MINUS           [ reduce using rule 42 (expr -> expr IF expr ELSE expr .) ]
-  ! STAR            [ reduce using rule 42 (expr -> expr IF expr ELSE expr .) ]
-  ! SLASH           [ reduce using rule 42 (expr -> expr IF expr ELSE expr .) ]
-  ! LESS            [ reduce using rule 42 (expr -> expr IF expr ELSE expr .) ]
-  ! LESS_EQUAL      [ reduce using rule 42 (expr -> expr IF expr ELSE expr .) ]
-  ! GREATER         [ reduce using rule 42 (expr -> expr IF expr ELSE expr .) ]
-  ! GREATER_EQUAL   [ reduce using rule 42 (expr -> expr IF expr ELSE expr .) ]
-  ! EQUAL_EQUAL     [ reduce using rule 42 (expr -> expr IF expr ELSE expr .) ]
-  ! BANG_EQUAL      [ reduce using rule 42 (expr -> expr IF expr ELSE expr .) ]
-  ! IF              [ reduce using rule 42 (expr -> expr IF expr ELSE expr .) ]
+  ! PLUS            [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
+  ! MINUS           [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
+  ! STAR            [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
+  ! SLASH           [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
+  ! LESS            [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
+  ! LESS_EQUAL      [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
+  ! GREATER         [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
+  ! GREATER_EQUAL   [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
+  ! EQUAL_EQUAL     [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
+  ! BANG_EQUAL      [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
+  ! DOT             [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
+  ! IF              [ reduce using rule 44 (expr -> expr IF expr ELSE expr .) ]
 
 
-state 96
+state 100
 
     (18) condition -> IF expr LEFT_BRACE stmt_list RIGHT_BRACE .
     (19) condition -> IF expr LEFT_BRACE stmt_list RIGHT_BRACE . ELSE LEFT_BRACE stmt_list RIGHT_BRACE
@@ -3100,31 +3354,31 @@ state 96
     IF              reduce using rule 18 (condition -> IF expr LEFT_BRACE stmt_list RIGHT_BRACE .)
     WHILE           reduce using rule 18 (condition -> IF expr LEFT_BRACE stmt_list RIGHT_BRACE .)
     RIGHT_BRACE     reduce using rule 18 (condition -> IF expr LEFT_BRACE stmt_list RIGHT_BRACE .)
-    ELSE            shift and go to state 100
+    ELSE            shift and go to state 105
 
 
-state 97
+state 101
 
-    (44) declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .
+    (46) declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .
 
-    LEFT_PAREN      reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    NUMBER          reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    NIL             reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    STRING          reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    LEFT_BRACKET    reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    IDENTIFIER      reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    LEFT_BRACE      reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    LET             reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    PRINT           reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    PRINTLN         reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    IF              reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    WHILE           reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
-    RIGHT_BRACE     reduce using rule 44 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    LEFT_PAREN      reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    NUMBER          reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    NIL             reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    STRING          reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    LEFT_BRACKET    reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    IDENTIFIER      reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    LEFT_BRACE      reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    LET             reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    PRINT           reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    PRINTLN         reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    IF              reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    WHILE           reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
+    RIGHT_BRACE     reduce using rule 46 (declaration -> LET IDENTIFIER EQUAL expr SEMICOLON .)
 
 
-state 98
+state 102
 
-    (45) declaration -> LET MUT IDENTIFIER EQUAL expr . SEMICOLON
+    (47) declaration -> LET MUT IDENTIFIER EQUAL expr . SEMICOLON
     (22) expr -> expr . PLUS expr
     (23) expr -> expr . MINUS expr
     (24) expr -> expr . STAR expr
@@ -3135,9 +3389,11 @@ state 98
     (29) expr -> expr . GREATER_EQUAL expr
     (30) expr -> expr . EQUAL_EQUAL expr
     (31) expr -> expr . BANG_EQUAL expr
-    (42) expr -> expr . IF expr ELSE expr
+    (37) expr -> expr . DOT IDENTIFIER
+    (38) expr -> expr . DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (44) expr -> expr . IF expr ELSE expr
 
-    SEMICOLON       shift and go to state 101
+    SEMICOLON       shift and go to state 106
     PLUS            shift and go to state 44
     MINUS           shift and go to state 45
     STAR            shift and go to state 46
@@ -3148,10 +3404,11 @@ state 98
     GREATER_EQUAL   shift and go to state 51
     EQUAL_EQUAL     shift and go to state 52
     BANG_EQUAL      shift and go to state 53
-    IF              shift and go to state 54
+    DOT             shift and go to state 54
+    IF              shift and go to state 55
 
 
-state 99
+state 103
 
     (17) while -> WHILE expr LEFT_BRACE stmt_list RIGHT_BRACE .
 
@@ -3170,33 +3427,70 @@ state 99
     RIGHT_BRACE     reduce using rule 17 (while -> WHILE expr LEFT_BRACE stmt_list RIGHT_BRACE .)
 
 
-state 100
+state 104
+
+    (38) expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .
+
+    PLUS            reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    MINUS           reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    STAR            reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    SLASH           reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LESS            reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LESS_EQUAL      reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    GREATER         reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    GREATER_EQUAL   reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    EQUAL_EQUAL     reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    BANG_EQUAL      reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    DOT             reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    IF              reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LEFT_PAREN      reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    NUMBER          reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    NIL             reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    STRING          reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LEFT_BRACKET    reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    IDENTIFIER      reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LEFT_BRACE      reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    LET             reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    PRINT           reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    PRINTLN         reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    WHILE           reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    RIGHT_BRACE     reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    FN              reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    $end            reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    RIGHT_PAREN     reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    COMMA           reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    RIGHT_BRACKET   reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    SEMICOLON       reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+    ELSE            reduce using rule 38 (expr -> expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN .)
+
+
+state 105
 
     (19) condition -> IF expr LEFT_BRACE stmt_list RIGHT_BRACE ELSE . LEFT_BRACE stmt_list RIGHT_BRACE
 
-    LEFT_BRACE      shift and go to state 102
+    LEFT_BRACE      shift and go to state 107
 
 
-state 101
+state 106
 
-    (45) declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .
+    (47) declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .
 
-    LEFT_PAREN      reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    NUMBER          reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    NIL             reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    STRING          reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    LEFT_BRACKET    reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    IDENTIFIER      reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    LEFT_BRACE      reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    LET             reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    PRINT           reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    PRINTLN         reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    IF              reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    WHILE           reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
-    RIGHT_BRACE     reduce using rule 45 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    LEFT_PAREN      reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    NUMBER          reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    NIL             reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    STRING          reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    LEFT_BRACKET    reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    IDENTIFIER      reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    LEFT_BRACE      reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    LET             reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    PRINT           reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    PRINTLN         reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    IF              reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    WHILE           reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
+    RIGHT_BRACE     reduce using rule 47 (declaration -> LET MUT IDENTIFIER EQUAL expr SEMICOLON .)
 
 
-state 102
+state 107
 
     (19) condition -> IF expr LEFT_BRACE stmt_list RIGHT_BRACE ELSE LEFT_BRACE . stmt_list RIGHT_BRACE
     (9) stmt_list -> . stmt stmt_list
@@ -3222,13 +3516,15 @@ state 102
     (34) expr -> . NIL
     (35) expr -> . STRING
     (36) expr -> . LEFT_BRACKET expr_list_comma RIGHT_BRACKET
-    (37) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
-    (41) expr -> . IDENTIFIER
-    (42) expr -> . expr IF expr ELSE expr
-    (43) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
-    (44) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
-    (45) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
-    (46) assign -> . IDENTIFIER EQUAL expr SEMICOLON
+    (37) expr -> . expr DOT IDENTIFIER
+    (38) expr -> . expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (39) expr -> . IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    (43) expr -> . IDENTIFIER
+    (44) expr -> . expr IF expr ELSE expr
+    (45) expr -> . LEFT_BRACE stmt_list RIGHT_BRACE
+    (46) declaration -> . LET IDENTIFIER EQUAL expr SEMICOLON
+    (47) declaration -> . LET MUT IDENTIFIER EQUAL expr SEMICOLON
+    (48) assign -> . IDENTIFIER EQUAL expr SEMICOLON
     (20) print -> . PRINT expr SEMICOLON
     (21) print -> . PRINTLN expr SEMICOLON
     (18) condition -> . IF expr LEFT_BRACE stmt_list RIGHT_BRACE
@@ -3249,7 +3545,7 @@ state 102
     WHILE           shift and go to state 35
 
     expr                           shift and go to state 21
-    stmt_list                      shift and go to state 103
+    stmt_list                      shift and go to state 108
     stmt                           shift and go to state 20
     declaration                    shift and go to state 22
     assign                         shift and go to state 23
@@ -3257,14 +3553,14 @@ state 102
     condition                      shift and go to state 25
     while                          shift and go to state 26
 
-state 103
+state 108
 
     (19) condition -> IF expr LEFT_BRACE stmt_list RIGHT_BRACE ELSE LEFT_BRACE stmt_list . RIGHT_BRACE
 
-    RIGHT_BRACE     shift and go to state 104
+    RIGHT_BRACE     shift and go to state 109
 
 
-state 104
+state 109
 
     (19) condition -> IF expr LEFT_BRACE stmt_list RIGHT_BRACE ELSE LEFT_BRACE stmt_list RIGHT_BRACE .
 
@@ -3288,17 +3584,6 @@ WARNING:
 WARNING: shift/reduce conflict for LEFT_PAREN in state 16 resolved as shift
 WARNING: shift/reduce conflict for IF in state 21 resolved as shift
 WARNING: shift/reduce conflict for LEFT_PAREN in state 36 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 68 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 68 resolved as shift
-WARNING: shift/reduce conflict for STAR in state 68 resolved as shift
-WARNING: shift/reduce conflict for SLASH in state 68 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 68 resolved as shift
-WARNING: shift/reduce conflict for LESS_EQUAL in state 68 resolved as shift
-WARNING: shift/reduce conflict for GREATER in state 68 resolved as shift
-WARNING: shift/reduce conflict for GREATER_EQUAL in state 68 resolved as shift
-WARNING: shift/reduce conflict for EQUAL_EQUAL in state 68 resolved as shift
-WARNING: shift/reduce conflict for BANG_EQUAL in state 68 resolved as shift
-WARNING: shift/reduce conflict for IF in state 68 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 69 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 69 resolved as shift
 WARNING: shift/reduce conflict for STAR in state 69 resolved as shift
@@ -3309,6 +3594,7 @@ WARNING: shift/reduce conflict for GREATER in state 69 resolved as shift
 WARNING: shift/reduce conflict for GREATER_EQUAL in state 69 resolved as shift
 WARNING: shift/reduce conflict for EQUAL_EQUAL in state 69 resolved as shift
 WARNING: shift/reduce conflict for BANG_EQUAL in state 69 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 69 resolved as shift
 WARNING: shift/reduce conflict for IF in state 69 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 70 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 70 resolved as shift
@@ -3320,6 +3606,7 @@ WARNING: shift/reduce conflict for GREATER in state 70 resolved as shift
 WARNING: shift/reduce conflict for GREATER_EQUAL in state 70 resolved as shift
 WARNING: shift/reduce conflict for EQUAL_EQUAL in state 70 resolved as shift
 WARNING: shift/reduce conflict for BANG_EQUAL in state 70 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 70 resolved as shift
 WARNING: shift/reduce conflict for IF in state 70 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 71 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 71 resolved as shift
@@ -3331,6 +3618,7 @@ WARNING: shift/reduce conflict for GREATER in state 71 resolved as shift
 WARNING: shift/reduce conflict for GREATER_EQUAL in state 71 resolved as shift
 WARNING: shift/reduce conflict for EQUAL_EQUAL in state 71 resolved as shift
 WARNING: shift/reduce conflict for BANG_EQUAL in state 71 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 71 resolved as shift
 WARNING: shift/reduce conflict for IF in state 71 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 72 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 72 resolved as shift
@@ -3342,6 +3630,7 @@ WARNING: shift/reduce conflict for GREATER in state 72 resolved as shift
 WARNING: shift/reduce conflict for GREATER_EQUAL in state 72 resolved as shift
 WARNING: shift/reduce conflict for EQUAL_EQUAL in state 72 resolved as shift
 WARNING: shift/reduce conflict for BANG_EQUAL in state 72 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 72 resolved as shift
 WARNING: shift/reduce conflict for IF in state 72 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 73 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 73 resolved as shift
@@ -3353,6 +3642,7 @@ WARNING: shift/reduce conflict for GREATER in state 73 resolved as shift
 WARNING: shift/reduce conflict for GREATER_EQUAL in state 73 resolved as shift
 WARNING: shift/reduce conflict for EQUAL_EQUAL in state 73 resolved as shift
 WARNING: shift/reduce conflict for BANG_EQUAL in state 73 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 73 resolved as shift
 WARNING: shift/reduce conflict for IF in state 73 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 74 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 74 resolved as shift
@@ -3364,6 +3654,7 @@ WARNING: shift/reduce conflict for GREATER in state 74 resolved as shift
 WARNING: shift/reduce conflict for GREATER_EQUAL in state 74 resolved as shift
 WARNING: shift/reduce conflict for EQUAL_EQUAL in state 74 resolved as shift
 WARNING: shift/reduce conflict for BANG_EQUAL in state 74 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 74 resolved as shift
 WARNING: shift/reduce conflict for IF in state 74 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 75 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 75 resolved as shift
@@ -3375,6 +3666,7 @@ WARNING: shift/reduce conflict for GREATER in state 75 resolved as shift
 WARNING: shift/reduce conflict for GREATER_EQUAL in state 75 resolved as shift
 WARNING: shift/reduce conflict for EQUAL_EQUAL in state 75 resolved as shift
 WARNING: shift/reduce conflict for BANG_EQUAL in state 75 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 75 resolved as shift
 WARNING: shift/reduce conflict for IF in state 75 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 76 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 76 resolved as shift
@@ -3386,6 +3678,7 @@ WARNING: shift/reduce conflict for GREATER in state 76 resolved as shift
 WARNING: shift/reduce conflict for GREATER_EQUAL in state 76 resolved as shift
 WARNING: shift/reduce conflict for EQUAL_EQUAL in state 76 resolved as shift
 WARNING: shift/reduce conflict for BANG_EQUAL in state 76 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 76 resolved as shift
 WARNING: shift/reduce conflict for IF in state 76 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 77 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 77 resolved as shift
@@ -3397,15 +3690,30 @@ WARNING: shift/reduce conflict for GREATER in state 77 resolved as shift
 WARNING: shift/reduce conflict for GREATER_EQUAL in state 77 resolved as shift
 WARNING: shift/reduce conflict for EQUAL_EQUAL in state 77 resolved as shift
 WARNING: shift/reduce conflict for BANG_EQUAL in state 77 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 77 resolved as shift
 WARNING: shift/reduce conflict for IF in state 77 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 95 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 95 resolved as shift
-WARNING: shift/reduce conflict for STAR in state 95 resolved as shift
-WARNING: shift/reduce conflict for SLASH in state 95 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 95 resolved as shift
-WARNING: shift/reduce conflict for LESS_EQUAL in state 95 resolved as shift
-WARNING: shift/reduce conflict for GREATER in state 95 resolved as shift
-WARNING: shift/reduce conflict for GREATER_EQUAL in state 95 resolved as shift
-WARNING: shift/reduce conflict for EQUAL_EQUAL in state 95 resolved as shift
-WARNING: shift/reduce conflict for BANG_EQUAL in state 95 resolved as shift
-WARNING: shift/reduce conflict for IF in state 95 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 78 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 78 resolved as shift
+WARNING: shift/reduce conflict for STAR in state 78 resolved as shift
+WARNING: shift/reduce conflict for SLASH in state 78 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 78 resolved as shift
+WARNING: shift/reduce conflict for LESS_EQUAL in state 78 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 78 resolved as shift
+WARNING: shift/reduce conflict for GREATER_EQUAL in state 78 resolved as shift
+WARNING: shift/reduce conflict for EQUAL_EQUAL in state 78 resolved as shift
+WARNING: shift/reduce conflict for BANG_EQUAL in state 78 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 78 resolved as shift
+WARNING: shift/reduce conflict for IF in state 78 resolved as shift
+WARNING: shift/reduce conflict for LEFT_PAREN in state 79 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 99 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 99 resolved as shift
+WARNING: shift/reduce conflict for STAR in state 99 resolved as shift
+WARNING: shift/reduce conflict for SLASH in state 99 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 99 resolved as shift
+WARNING: shift/reduce conflict for LESS_EQUAL in state 99 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 99 resolved as shift
+WARNING: shift/reduce conflict for GREATER_EQUAL in state 99 resolved as shift
+WARNING: shift/reduce conflict for EQUAL_EQUAL in state 99 resolved as shift
+WARNING: shift/reduce conflict for BANG_EQUAL in state 99 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 99 resolved as shift
+WARNING: shift/reduce conflict for IF in state 99 resolved as shift
