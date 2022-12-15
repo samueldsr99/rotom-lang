@@ -1,0 +1,25 @@
+// This is a playground file, write your crap here
+
+fn sum1(a, b) {
+    let result = a + b;
+    result
+}
+
+fn sum2(a, b) {
+    a + b
+}
+
+fn sum3(a, b) -> a + b
+
+fn fact(x) -> 1 if x == 0 else x * fact(x - 1)
+
+fn main() {
+    let x = 7;
+    let y = 8;
+
+    print sum1(x, y);
+    print sum2(x, y);
+    print sum3(x, y);
+    print fact(x);
+    nil
+}

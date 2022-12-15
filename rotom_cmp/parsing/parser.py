@@ -1,0 +1,234 @@
+import ply.yacc as yacc
+
+from rotom_cmp.lexing import lexer
+from rotom_cmp.semantics.ast import (
+    Program,
+    FnDefinition,
+    BinaryExpr,
+    Literal,
+    DeclarationStmt,
+    Variable,
+    GroupingExpr,
+    PrintStmt,
+    FnCallExpr,
+    TernaryExpr,
+    BlockExpr,
+    ConditionStmt,
+    WhileStmt,
+    AssignStmt,
+)
+
+
+tokens = lexer.tokens
+
+
+def p_prog(p):
+    """
+    prog : fn_def_list
+    """
+    p[0] = Program(p[1])
+
+
+def p_fn_def_list(p):
+    """
+    fn_def_list : fn_def fn_def_list
+                | fn_def
+    """
+    if len(p) == 3:
+        p[0] = [p[1]] + p[2]
+    else:
+        p[0] = [p[1]]
+
+
+def p_fn_def(p):
+    """
+    fn_def : FN IDENTIFIER LEFT_PAREN param_list RIGHT_PAREN LEFT_BRACE stmt_list RIGHT_BRACE
+           | FN IDENTIFIER LEFT_PAREN param_list RIGHT_PAREN ARROW expr
+    """
+    if len(p) == 9:
+        p[0] = FnDefinition(name=p[2], params=p[4], stmts=p[7])
+    else:
+        p[0] = FnDefinition(name=p[2], params=p[4], stmts=[p[7]])
+
+
+def p_param_list(p):
+    """
+    param_list : IDENTIFIER COMMA param_list
+               | IDENTIFIER
+               | empty
+    """
+    if len(p) == 4:
+        p[0] = [p[1]] + p[3]
+    elif len(p) == 2:
+        if p[1] is None:
+            p[0] = []
+        else:
+            p[0] = [p[1]]
+
+
+def p_stmt_list(p):
+    """
+    stmt_list : stmt stmt_list
+              | stmt
+    """
+    if len(p) == 3:
+        p[0] = [p[1]] + p[2]
+    else:
+        p[0] = [p[1]]
+
+
+def p_stmt(p):
+    """
+    stmt : expr
+         | declaration
+         | assign
+         | print
+         | condition
+         | while
+    """
+    p[0] = p[1]
+
+
+def p_while(p):
+    """
+    while : WHILE expr LEFT_BRACE stmt_list RIGHT_BRACE
+    """
+    p[0] = WhileStmt(condition=p[2], stmts=p[4])
+
+
+def p_condition(p):
+    """
+    condition : IF expr LEFT_BRACE stmt_list RIGHT_BRACE
+              | IF expr LEFT_BRACE stmt_list RIGHT_BRACE ELSE LEFT_BRACE stmt_list RIGHT_BRACE
+    """
+    if len(p) == 6:
+        p[0] = ConditionStmt(condition=p[2], true_branch=p[4])
+    else:
+        p[0] = ConditionStmt(condition=p[2], true_branch=p[4], false_branch=p[8])
+
+
+def p_print(p):
+    """
+    print : PRINT expr SEMICOLON
+          | PRINTLN expr SEMICOLON
+    """
+    end_line = p[1] == "print"
+    p[0] = PrintStmt(p[2], end_line=end_line)
+
+
+def p_expr_binary(p):
+    """
+    expr : expr PLUS expr
+         | expr MINUS expr
+         | expr STAR expr
+         | expr SLASH expr
+         | expr LESS expr
+         | expr LESS_EQUAL expr
+         | expr GREATER expr
+         | expr GREATER_EQUAL expr
+         | expr EQUAL_EQUAL expr
+         | expr BANG_EQUAL expr
+    """
+    p[0] = BinaryExpr(p[1], p[2], p[3])
+
+
+def p_expr_grouping(p):
+    """
+    expr : LEFT_PAREN expr RIGHT_PAREN
+    """
+    p[0] = GroupingExpr(p[2])
+
+
+def p_expr_literal(p):
+    """
+    expr : NUMBER
+         | NIL
+         | STRING
+         | LEFT_BRACKET expr_list_comma RIGHT_BRACKET
+    """
+    if len(p) == 4:
+        p[0] = Literal(p[2], type="list")
+    else:
+        if isinstance(p[1], int) or isinstance(p[1], float):
+            type_ = "number"
+        elif p[1] is None:
+            type_ = "nil"
+        elif isinstance(p[1], str):
+            type_ = "string"
+        p[0] = Literal(p[1], type=type_)
+
+
+def p_expr_fn_call(p):
+    """
+    expr : IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    """
+    p[0] = FnCallExpr(name=p[1], params=p[3])
+
+
+def p_expr_list_comma(p):
+    """
+    expr_list_comma : expr COMMA expr_list_comma
+                 | expr
+                 | empty
+    """
+    if len(p) == 4:
+        p[0] = [p[1]] + p[3]
+    elif len(p) == 2:
+        if p[1] is None:
+            p[0] = []
+        else:
+            p[0] = [p[1]]
+
+
+def p_expr_variable(p):
+    """
+    expr : IDENTIFIER
+    """
+    p[0] = Variable(name=p[1])
+
+
+def p_expr_ternary(p):
+    """
+    expr : expr IF expr ELSE expr
+    """
+    p[0] = TernaryExpr(condition=p[3], true_branch=p[1], false_branch=p[5])
+
+
+def p_expr_block(p):
+    """
+    expr : LEFT_BRACE stmt_list RIGHT_BRACE
+    """
+    p[0] = BlockExpr(p[2])
+
+
+def p_declaration(p):
+    """
+    declaration : LET IDENTIFIER EQUAL expr SEMICOLON
+                | LET MUT IDENTIFIER EQUAL expr SEMICOLON
+    """
+    if len(p) == 6:
+        p[0] = DeclarationStmt(p[2], p[4])
+    else:
+        p[0] = DeclarationStmt(p[3], p[5], is_mutable=True)
+
+
+def p_assign(p):
+    """
+    assign : IDENTIFIER EQUAL expr SEMICOLON
+    """
+    p[0] = AssignStmt(name=p[1], expr=p[3])
+
+
+def p_empty(p):
+    """
+    empty :
+    """
+    pass
+
+
+def p_error(p):
+    print(p)
+    print("Syntax error on input")
+
+
+parser = yacc.yacc()

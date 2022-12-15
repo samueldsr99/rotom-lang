@@ -1,0 +1,6 @@
+prog : fn_def_list
+
+fn_def_list : fn_def fn_def_list
+              | fn_def
+
+fn_def : FN IDENTIFIER LEFT_PAREN params_list RIGHT_PAREN LEFT_BRACE RIGHT_BRACE
