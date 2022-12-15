@@ -16,6 +16,8 @@ from rotom_cmp.semantics.ast import (
     ConditionStmt,
     WhileStmt,
     AssignStmt,
+    DispatchMethodExpr,
+    DispatchVariableExpr,
 )
 
 
@@ -156,6 +158,17 @@ def p_expr_literal(p):
         elif isinstance(p[1], str):
             type_ = "string"
         p[0] = Literal(p[1], type=type_)
+
+
+def p_expr_dispatch(p):
+    """
+    expr : expr DOT IDENTIFIER
+         | expr DOT IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    """
+    if len(p) == 4:
+        p[0] = DispatchVariableExpr(expr=p[1], name=p[3])
+    else:
+        p[0] = DispatchMethodExpr(expr=p[1], name=p[3], params=p[5])
 
 
 def p_expr_fn_call(p):

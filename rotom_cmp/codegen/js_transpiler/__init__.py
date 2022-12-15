@@ -15,6 +15,8 @@ from rotom_cmp.semantics.ast import (
     ConditionStmt,
     WhileStmt,
     AssignStmt,
+    DispatchMethodExpr,
+    DispatchVariableExpr,
 )
 
 from rotom_cmp.utils.visitor import Visitor
@@ -187,3 +189,14 @@ class JavascriptTranspiler(Visitor):
         expr = node.expr.visit(self, tabs)
 
         return "  " * tabs + f"{node.name} = {expr};"
+
+    def visit_DispatchVariableExpr(self, node: DispatchVariableExpr, tabs: int = 0):
+        expr = node.expr.visit(self, tabs)
+
+        return f"{expr}.{node.name}"
+
+    def visit_DispatchMethodExpr(self, node: DispatchMethodExpr, tabs: int = 0):
+        expr = node.expr.visit(self, tabs)
+        params = ", ".join([param.visit(self, tabs) for param in node.params])
+
+        return f"{expr}.{node.name}({params})"
