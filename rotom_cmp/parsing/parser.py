@@ -21,6 +21,7 @@ from rotom_cmp.semantics.ast import (
     IndexOfExpr,
     UseStmt,
     ForStmt,
+    ReturnStmt,
 )
 
 
@@ -79,7 +80,7 @@ def p_fn_def(p):
     if len(p) == 9:
         p[0] = FnDefinition(name=p[2], params=p[4], stmts=p[7])
     else:
-        p[0] = FnDefinition(name=p[2], params=p[4], stmts=[p[7]])
+        p[0] = FnDefinition(name=p[2], params=p[4], stmts=[p[7]], is_inline=True)
 
 
 def p_param_list(p):
@@ -117,8 +118,16 @@ def p_stmt(p):
          | condition
          | while
          | for
+         | return
     """
     p[0] = p[1]
+
+
+def p_return(p):
+    """
+    return : RETURN expr SEMICOLON
+    """
+    p[0] = ReturnStmt(expr=p[2])
 
 
 def p_for(p):

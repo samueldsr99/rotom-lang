@@ -20,6 +20,7 @@ from rotom_cmp.semantics.ast import (
     IndexOfExpr,
     UseStmt,
     ForStmt,
+    ReturnStmt,
 )
 
 from rotom_cmp.utils.visitor import Visitor
@@ -66,11 +67,11 @@ class JavascriptTranspiler(Visitor):
         params = ", ".join(node.params)
 
         stmts: List[str] = []
-        for stmt in node.stmts[:-1]:
+        for stmt in node.stmts:
             stmts.append(stmt.visit(self, tabs + 1))
-        stmts.append(
-            make_expr_str_return(node.stmts[-1].visit(self, tabs + 1), tabs + 1)
-        )
+
+        if node.is_inline:
+            stmts[-1] = make_expr_str_return(stmts[-1], tabs + 1)
 
         body = list_to_str(stmts)
 
@@ -245,3 +246,6 @@ class JavascriptTranspiler(Visitor):
                     "  " * tabs + "}",
                 ]
             )
+
+    def visit_ReturnStmt(self, node: ReturnStmt, tabs: int = 0):
+        return "  " * tabs + f"return {node.expr.visit(self, tabs)};"

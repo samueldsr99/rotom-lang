@@ -18,10 +18,13 @@ class Expr(Node):
 
 
 class FnDefinition(Node):
-    def __init__(self, name: str, params: List[str], stmts: List[Stmt]) -> None:
+    def __init__(
+        self, name: str, params: List[str], stmts: List[Stmt], is_inline: bool = False
+    ) -> None:
         self.name = name
         self.params = params
         self.stmts = stmts
+        self.is_inline = is_inline
 
     def visit(self, visitor: Visitor, *args):
         return visitor.visit_FnDefinition(self, *args)
@@ -213,3 +216,11 @@ class ForStmt(Expr):
 
     def visit(self, visitor: Visitor, *args):
         return visitor.visit_ForStmt(self, *args)
+
+
+class ReturnStmt(Stmt):
+    def __init__(self, expr: Expr) -> None:
+        self.expr = expr
+
+    def visit(self, visitor: Visitor, *args):
+        return visitor.visit_ReturnStmt(self, *args)
