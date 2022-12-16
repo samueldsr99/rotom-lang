@@ -13,6 +13,7 @@ class TokenType:
     SEMICOLON = "SEMICOLON"
     SLASH = "SLASH"
     STAR = "STAR"
+    COLON = "COLON"
 
     # One or two characters
     BANG = "BANG"
@@ -50,6 +51,7 @@ class TokenType:
     MUT = "MUT"
     WHILE = "WHILE"
     USE = "USE"
+    IN = "IN"
 
     # EOF
     EOF = "EOF"

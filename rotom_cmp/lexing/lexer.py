@@ -24,6 +24,7 @@ reserved = {
     "mut": TokenType.MUT,
     "while": TokenType.WHILE,
     "use": TokenType.USE,
+    "in": TokenType.IN,
 }
 
 
@@ -43,6 +44,7 @@ tokens = [
     TokenType.SLASH,
     TokenType.STAR,
     TokenType.ARROW,
+    TokenType.COLON,
     # One or two characters
     TokenType.BANG,
     TokenType.BANG_EQUAL,
@@ -76,6 +78,7 @@ tokens = [
     TokenType.MUT,
     TokenType.WHILE,
     TokenType.USE,
+    TokenType.IN,
     # EOF
     TokenType.EOF,
 ]
@@ -93,6 +96,7 @@ t_PLUS = r"\+"
 t_SEMICOLON = r"\;"
 t_SLASH = r"\/"
 t_STAR = r"\*"
+t_COLON = r"\:"
 t_ARROW = r"\-\>"
 
 t_BANG = r"\!"

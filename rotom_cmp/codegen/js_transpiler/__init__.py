@@ -19,6 +19,7 @@ from rotom_cmp.semantics.ast import (
     DispatchVariableExpr,
     IndexOfExpr,
     UseStmt,
+    ForStmt,
 )
 
 from rotom_cmp.utils.visitor import Visitor
@@ -222,3 +223,25 @@ class JavascriptTranspiler(Visitor):
         pos = node.pos.visit(self, tabs)
 
         return f"{expr}[{pos}]"
+
+    def visit_ForStmt(self, node: ForStmt, tabs: int = 0):
+        body = list_to_str([stmt.visit(self, tabs + 1) for stmt in node.stmts])
+        iterable = node.iterable.visit(self, tabs)
+
+        if node.iterator_name is not None:
+            return list_to_str(
+                [
+                    "  " * tabs
+                    + f"for (const [{node.iterator_name}, {node.name}] of {iterable}.map((e, i) => [i, e])) {{",
+                    body,
+                    "  " * tabs + "}",
+                ]
+            )
+        else:
+            return list_to_str(
+                [
+                    "  " * tabs + f"for (const {node.name} of {iterable}) {{",
+                    body,
+                    "  " * tabs + "}",
+                ]
+            )

@@ -20,6 +20,7 @@ from rotom_cmp.semantics.ast import (
     DispatchVariableExpr,
     IndexOfExpr,
     UseStmt,
+    ForStmt,
 )
 
 
@@ -115,8 +116,20 @@ def p_stmt(p):
          | print
          | condition
          | while
+         | for
     """
     p[0] = p[1]
+
+
+def p_for(p):
+    """
+    for : FOR IDENTIFIER IN expr LEFT_BRACE stmt_list RIGHT_BRACE
+        | FOR IDENTIFIER COMMA IDENTIFIER IN expr LEFT_BRACE stmt_list RIGHT_BRACE
+    """
+    if len(p) == 8:
+        p[0] = ForStmt(name=p[2], iterable=p[4], stmts=p[6])
+    else:
+        p[0] = ForStmt(name=p[4], iterable=p[6], stmts=p[8], iterator_name=p[2])
 
 
 def p_while(p):

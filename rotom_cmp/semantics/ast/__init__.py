@@ -200,3 +200,16 @@ class IndexOfExpr(Expr):
 
     def visit(self, visitor: Visitor, *args):
         return visitor.visit_IndexOfExpr(self, *args)
+
+
+class ForStmt(Expr):
+    def __init__(
+        self, name: str, iterable: Expr, stmts: List[Stmt], iterator_name: str = None
+    ) -> None:
+        self.name = name
+        self.iterable = iterable
+        self.stmts = stmts
+        self.iterator_name = iterator_name
+
+    def visit(self, visitor: Visitor, *args):
+        return visitor.visit_ForStmt(self, *args)
