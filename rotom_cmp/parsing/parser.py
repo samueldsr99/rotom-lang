@@ -29,6 +29,22 @@ from rotom_cmp.semantics.ast import (
 tokens = lexer.tokens
 
 
+precedence = (
+    ("right", "EQUAL"),
+    ("right", "BANG"),
+    (
+        "nonassoc",
+        "LESS",
+        "LESS_EQUAL",
+        "GREATER",
+        "GREATER_EQUAL",
+        "EQUAL_EQUAL",
+        "BANG_EQUAL",
+    ),
+    ("left", "PLUS", "MINUS", "STAR", "SLASH"),
+)
+
+
 def p_prog(p):
     """
     prog : use_list fn_def_list
@@ -38,7 +54,7 @@ def p_prog(p):
 
 def p_use_list(p):
     """
-    use_list : use use_list
+    use_list : use_list use
              | use
              | empty
     """
@@ -234,9 +250,9 @@ def p_expr_indexof(p):
 
 def p_expr_fn_call(p):
     """
-    expr : IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
+    expr : expr LEFT_PAREN expr_list_comma RIGHT_PAREN
     """
-    p[0] = FnCallExpr(name=p[1], params=p[3])
+    p[0] = FnCallExpr(name_expr=p[1], params=p[3])
 
 
 def p_expr_list_comma(p):
@@ -305,8 +321,8 @@ def p_declaration(p):
 
 def p_assign(p):
     """
-    assign : IDENTIFIER EQUAL expr SEMICOLON
-           | IDENTIFIER indexof_list EQUAL expr SEMICOLON
+    assign : expr EQUAL expr SEMICOLON
+           | expr indexof_list EQUAL expr SEMICOLON
     """
     if len(p) == 5:
         p[0] = AssignStmt(name=p[1], expr=p[3])
@@ -326,4 +342,4 @@ def p_error(p):
     print("Syntax error on input")
 
 
-parser = yacc.yacc()
+parser = yacc.yacc(debug=True)

@@ -117,8 +117,8 @@ class PrintStmt(Stmt):
 
 
 class FnCallExpr(Expr):
-    def __init__(self, name: str, params: List[Expr]) -> None:
-        self.name = name
+    def __init__(self, name_expr: Expr, params: List[Expr]) -> None:
+        self.name_expr = name_expr
         self.params = params
 
     def visit(self, visitor: Visitor, *args):

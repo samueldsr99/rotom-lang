@@ -141,9 +141,10 @@ class JavascriptTranspiler(Visitor):
             return "  " * tabs + f"process.stdout.write({value});"
 
     def visit_FnCallExpr(self, node: FnCallExpr, tabs: int = 0):
+        fn_name = node.name_expr.visit(self, tabs)
         params = ", ".join([param.visit(self) for param in node.params])
 
-        return f"{node.name}({params})"
+        return f"{fn_name}({params})"
 
     def visit_TernaryExpr(self, node: TernaryExpr, tabs: int = 0):
         condition = node.condition.visit(self)
