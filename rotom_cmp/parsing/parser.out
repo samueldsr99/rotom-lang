@@ -17,7 +17,7 @@ Grammar
 
 Rule 0     S' -> prog
 Rule 1     prog -> use_list fn_def_list
-Rule 2     use_list -> use_list use
+Rule 2     use_list -> use use_list
 Rule 3     use_list -> use
 Rule 4     use_list -> empty
 Rule 5     use -> USE STRING ARROW IDENTIFIER SEMICOLON
@@ -161,18 +161,15 @@ state 0
 
     (0) S' -> . prog
     (1) prog -> . use_list fn_def_list
-    (2) use_list -> . use_list use
+    (2) use_list -> . use use_list
     (3) use_list -> . use
     (4) use_list -> . empty
     (5) use -> . USE STRING ARROW IDENTIFIER SEMICOLON
     (6) use -> . USE STRING ARROW LEFT_PAREN param_list RIGHT_PAREN SEMICOLON
     (65) empty -> .
 
-  ! shift/reduce conflict for USE resolved as shift
     USE             shift and go to state 5
     FN              reduce using rule 65 (empty -> .)
-
-  ! USE             [ reduce using rule 65 (empty -> .) ]
 
     prog                           shift and go to state 1
     use_list                       shift and go to state 2
@@ -188,34 +185,41 @@ state 1
 state 2
 
     (1) prog -> use_list . fn_def_list
-    (2) use_list -> use_list . use
     (7) fn_def_list -> . fn_def fn_def_list
     (8) fn_def_list -> . fn_def
-    (5) use -> . USE STRING ARROW IDENTIFIER SEMICOLON
-    (6) use -> . USE STRING ARROW LEFT_PAREN param_list RIGHT_PAREN SEMICOLON
     (9) fn_def -> . FN IDENTIFIER LEFT_PAREN param_list RIGHT_PAREN LEFT_BRACE stmt_list RIGHT_BRACE
     (10) fn_def -> . FN IDENTIFIER LEFT_PAREN param_list RIGHT_PAREN ARROW expr
 
-    USE             shift and go to state 5
-    FN              shift and go to state 9
+    FN              shift and go to state 8
 
     fn_def_list                    shift and go to state 6
-    use                            shift and go to state 7
-    fn_def                         shift and go to state 8
+    fn_def                         shift and go to state 7
 
 state 3
 
+    (2) use_list -> use . use_list
     (3) use_list -> use .
+    (2) use_list -> . use use_list
+    (3) use_list -> . use
+    (4) use_list -> . empty
+    (5) use -> . USE STRING ARROW IDENTIFIER SEMICOLON
+    (6) use -> . USE STRING ARROW LEFT_PAREN param_list RIGHT_PAREN SEMICOLON
+    (65) empty -> .
 
-    USE             reduce using rule 3 (use_list -> use .)
+  ! reduce/reduce conflict for FN resolved using rule 3 (use_list -> use .)
     FN              reduce using rule 3 (use_list -> use .)
+    USE             shift and go to state 5
 
+  ! FN              [ reduce using rule 65 (empty -> .) ]
+
+    use                            shift and go to state 3
+    use_list                       shift and go to state 9
+    empty                          shift and go to state 4
 
 state 4
 
     (4) use_list -> empty .
 
-    USE             reduce using rule 4 (use_list -> empty .)
     FN              reduce using rule 4 (use_list -> empty .)
 
 
@@ -236,14 +240,6 @@ state 6
 
 state 7
 
-    (2) use_list -> use_list use .
-
-    USE             reduce using rule 2 (use_list -> use_list use .)
-    FN              reduce using rule 2 (use_list -> use_list use .)
-
-
-state 8
-
     (7) fn_def_list -> fn_def . fn_def_list
     (8) fn_def_list -> fn_def .
     (7) fn_def_list -> . fn_def fn_def_list
@@ -252,17 +248,24 @@ state 8
     (10) fn_def -> . FN IDENTIFIER LEFT_PAREN param_list RIGHT_PAREN ARROW expr
 
     $end            reduce using rule 8 (fn_def_list -> fn_def .)
-    FN              shift and go to state 9
+    FN              shift and go to state 8
 
-    fn_def                         shift and go to state 8
+    fn_def                         shift and go to state 7
     fn_def_list                    shift and go to state 11
 
-state 9
+state 8
 
     (9) fn_def -> FN . IDENTIFIER LEFT_PAREN param_list RIGHT_PAREN LEFT_BRACE stmt_list RIGHT_BRACE
     (10) fn_def -> FN . IDENTIFIER LEFT_PAREN param_list RIGHT_PAREN ARROW expr
 
     IDENTIFIER      shift and go to state 12
+
+
+state 9
+
+    (2) use_list -> use use_list .
+
+    FN              reduce using rule 2 (use_list -> use use_list .)
 
 
 state 10
@@ -4606,7 +4609,6 @@ state 157
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for USE in state 0 resolved as shift
 WARNING: shift/reduce conflict for LEFT_PAREN in state 99 resolved as shift
 WARNING: shift/reduce conflict for LEFT_BRACKET in state 120 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 136 resolved as shift
@@ -4623,5 +4625,7 @@ WARNING: shift/reduce conflict for DOT in state 136 resolved as shift
 WARNING: shift/reduce conflict for LEFT_BRACKET in state 136 resolved as shift
 WARNING: shift/reduce conflict for LEFT_PAREN in state 136 resolved as shift
 WARNING: shift/reduce conflict for IF in state 136 resolved as shift
+WARNING: reduce/reduce conflict in state 3 resolved using rule (use_list -> use)
+WARNING: rejected rule (empty -> <empty>) in state 3
 WARNING: reduce/reduce conflict in state 120 resolved using rule (expr -> expr LEFT_BRACKET expr RIGHT_BRACKET)
 WARNING: rejected rule (indexof_list -> LEFT_BRACKET expr RIGHT_BRACKET) in state 120

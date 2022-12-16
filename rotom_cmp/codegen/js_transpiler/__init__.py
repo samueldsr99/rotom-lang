@@ -155,11 +155,8 @@ class JavascriptTranspiler(Visitor):
 
     def visit_BlockExpr(self, node: BlockExpr, tabs: int = 0):
         stmts: List[str] = []
-        for stmt in node.stmts[:-1]:
+        for stmt in node.stmts:
             stmts.append(stmt.visit(self, tabs + 1))
-        stmts.append(
-            make_expr_str_return(node.stmts[-1].visit(self, tabs + 1), tabs + 1)
-        )
 
         body = list_to_str(stmts)
 
@@ -207,14 +204,15 @@ class JavascriptTranspiler(Visitor):
         )
 
     def visit_AssignStmt(self, node: AssignStmt, tabs: int = 0):
+        name = node.name.visit(self, tabs)
         expr = node.expr.visit(self, tabs)
         if node.is_indexed:
             indexes = (
                 "[" + "][".join([idx.visit(self, tabs) for idx in node.indexes]) + "]"
             )
-            return "  " * tabs + f"{node.name}{indexes} = {expr};"
+            return "  " * tabs + f"{name}{indexes} = {expr};"
         else:
-            return "  " * tabs + f"{node.name} = {expr};"
+            return "  " * tabs + f"{name} = {expr};"
 
     def visit_DispatchVariableExpr(self, node: DispatchVariableExpr, tabs: int = 0):
         expr = node.expr.visit(self, tabs)

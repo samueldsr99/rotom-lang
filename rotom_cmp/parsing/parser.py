@@ -54,7 +54,7 @@ def p_prog(p):
 
 def p_use_list(p):
     """
-    use_list : use_list use
+    use_list : use use_list
              | use
              | empty
     """

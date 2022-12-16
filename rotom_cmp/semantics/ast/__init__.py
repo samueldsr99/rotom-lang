@@ -166,7 +166,7 @@ class WhileStmt(Stmt):
 
 class AssignStmt(Stmt):
     def __init__(
-        self, name: str, expr: Expr, is_indexed: bool = False, indexes: List[Expr] = []
+        self, name: Expr, expr: Expr, is_indexed: bool = False, indexes: List[Expr] = []
     ) -> None:
         self.name = name
         self.expr = expr
