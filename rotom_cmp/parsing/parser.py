@@ -18,6 +18,7 @@ from rotom_cmp.semantics.ast import (
     AssignStmt,
     DispatchMethodExpr,
     DispatchVariableExpr,
+    IndexOfExpr,
 )
 
 
@@ -171,6 +172,13 @@ def p_expr_dispatch(p):
         p[0] = DispatchMethodExpr(expr=p[1], name=p[3], params=p[5])
 
 
+def p_expr_indexof(p):
+    """
+    expr : expr LEFT_BRACKET expr RIGHT_BRACKET
+    """
+    p[0] = IndexOfExpr(expr=p[1], pos=p[3])
+
+
 def p_expr_fn_call(p):
     """
     expr : IDENTIFIER LEFT_PAREN expr_list_comma RIGHT_PAREN
@@ -214,22 +222,43 @@ def p_expr_block(p):
     p[0] = BlockExpr(p[2])
 
 
+def p_indexof_list(p):
+    """
+    indexof_list : LEFT_BRACKET expr RIGHT_BRACKET
+                 | LEFT_BRACKET expr RIGHT_BRACKET indexof_list
+    """
+    if len(p) == 4:
+        p[0] = [p[2]]
+    else:
+        p[0] = [p[2]] + p[4]
+
+
 def p_declaration(p):
     """
     declaration : LET IDENTIFIER EQUAL expr SEMICOLON
                 | LET MUT IDENTIFIER EQUAL expr SEMICOLON
+                | LET IDENTIFIER SEMICOLON
+                | LET MUT IDENTIFIER SEMICOLON
     """
     if len(p) == 6:
         p[0] = DeclarationStmt(p[2], p[4])
-    else:
+    elif len(p) == 7:
         p[0] = DeclarationStmt(p[3], p[5], is_mutable=True)
+    elif len(p) == 4:
+        p[0] = DeclarationStmt(p[2], "nil")
+    elif len(p) == 5:
+        p[0] = DeclarationStmt(p[3], "nil", is_mutable=True)
 
 
 def p_assign(p):
     """
     assign : IDENTIFIER EQUAL expr SEMICOLON
+           | IDENTIFIER indexof_list EQUAL expr SEMICOLON
     """
-    p[0] = AssignStmt(name=p[1], expr=p[3])
+    if len(p) == 5:
+        p[0] = AssignStmt(name=p[1], expr=p[3])
+    else:
+        p[0] = AssignStmt(name=p[1], expr=p[4], is_indexed=True, indexes=p[2])
 
 
 def p_empty(p):

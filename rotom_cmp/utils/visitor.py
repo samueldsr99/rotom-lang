@@ -49,3 +49,6 @@ class Visitor(metaclass=ABCMeta):
 
     def visit_DispatchMethodExpr(self, node, *args):
         pass
+
+    def visit_IndexOfExpr(self, node, *args):
+        pass

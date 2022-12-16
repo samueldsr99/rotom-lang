@@ -151,9 +151,13 @@ class WhileStmt(Stmt):
 
 
 class AssignStmt(Stmt):
-    def __init__(self, name: str, expr: Expr) -> None:
+    def __init__(
+        self, name: str, expr: Expr, is_indexed: bool = False, indexes: List[Expr] = []
+    ) -> None:
         self.name = name
         self.expr = expr
+        self.is_indexed = is_indexed
+        self.indexes = indexes
 
     def visit(self, visitor: Visitor, *args):
         return visitor.visit_AssignStmt(self, *args)
@@ -176,3 +180,12 @@ class DispatchMethodExpr(Expr):
 
     def visit(self, visitor: Visitor, *args):
         return visitor.visit_DispatchMethodExpr(self, *args)
+
+
+class IndexOfExpr(Expr):
+    def __init__(self, expr: Expr, pos: Expr) -> None:
+        self.expr = expr
+        self.pos = pos
+
+    def visit(self, visitor: Visitor, *args):
+        return visitor.visit_IndexOfExpr(self, *args)

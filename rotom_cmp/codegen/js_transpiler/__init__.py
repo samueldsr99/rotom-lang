@@ -17,6 +17,7 @@ from rotom_cmp.semantics.ast import (
     AssignStmt,
     DispatchMethodExpr,
     DispatchVariableExpr,
+    IndexOfExpr,
 )
 
 from rotom_cmp.utils.visitor import Visitor
@@ -106,7 +107,8 @@ class JavascriptTranspiler(Visitor):
         decl_keyword = "let" if node.is_mutable else "const"
         return (
             "  " * tabs
-            + f"{decl_keyword} {node.name} = {node.value.visit(self, tabs)};"
+            + f"{decl_keyword} {node.name}"
+            + (";" if node.value == "nil" else f" = {node.value.visit(self, tabs)};")
         )
 
     def visit_GroupingExpr(self, node: GroupingExpr, tabs: int = 0):
@@ -187,8 +189,13 @@ class JavascriptTranspiler(Visitor):
 
     def visit_AssignStmt(self, node: AssignStmt, tabs: int = 0):
         expr = node.expr.visit(self, tabs)
-
-        return "  " * tabs + f"{node.name} = {expr};"
+        if node.is_indexed:
+            indexes = (
+                "[" + "][".join([idx.visit(self, tabs) for idx in node.indexes]) + "]"
+            )
+            return "  " * tabs + f"{node.name}{indexes} = {expr};"
+        else:
+            return "  " * tabs + f"{node.name} = {expr};"
 
     def visit_DispatchVariableExpr(self, node: DispatchVariableExpr, tabs: int = 0):
         expr = node.expr.visit(self, tabs)
@@ -200,3 +207,9 @@ class JavascriptTranspiler(Visitor):
         params = ", ".join([param.visit(self, tabs) for param in node.params])
 
         return f"{expr}.{node.name}({params})"
+
+    def visit_IndexOfExpr(self, node: IndexOfExpr, tabs: int = 0):
+        expr = node.expr.visit(self, tabs)
+        pos = node.pos.visit(self, tabs)
+
+        return f"{expr}[{pos}]"
