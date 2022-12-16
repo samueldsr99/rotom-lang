@@ -6,6 +6,18 @@
 
 This is an in progress implementation of a js transpiled programming language, it aims to have a simply yet powerful syntax.
 
+## Usage
+
+```bash
+python3 rotomc.py path/to/file
+```
+
+## Help
+
+```bash
+python3 rotomc.py --help
+```
+
 Example:
 
 ```
