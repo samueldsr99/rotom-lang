@@ -1,0 +1,14 @@
+fn getNames() -> ["Superman", "Spongebob", "Larry"]
+
+fn main() {
+    let names = getNames().sort();
+
+    for name in names {
+        print name;
+    }
+
+    // enumerated
+    for i, name in names {
+        print i + " " + name;
+    }
+}

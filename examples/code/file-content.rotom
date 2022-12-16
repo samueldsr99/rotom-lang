@@ -1,0 +1,9 @@
+use "fs" -> fs;
+
+fn main() {
+    // This script should be called from the project root
+    let content = fs.readFileSync("./examples/code/file-content.rotom", "utf-8");
+
+    print "The content of this file is:";
+    print content;
+}

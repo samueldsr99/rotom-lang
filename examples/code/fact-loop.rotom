@@ -1,0 +1,10 @@
+fn fact(x) -> 1 if x == 0 else x * fact(x - 1)
+
+fn main() {
+    let mut i = 0;
+    let n = 5;
+    while i < n {
+        print "fact(" + i + "): " + fact(i);
+        i = i + 1;
+    }
+}

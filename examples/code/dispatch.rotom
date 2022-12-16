@@ -1,0 +1,9 @@
+fn hiMom() -> "Hi mom."
+
+fn getFn() -> hiMom
+
+fn main() {
+    print hiMom().length; // 7
+    print hiMom().split("").reverse().join(""); // .mom iH
+    print (hiMom() + " " + hiMom().substring(3, 6) + "!!!").toUpperCase(); // HI MOM. MOM!!!
+}
