@@ -1,5 +1,7 @@
 import ply.yacc as yacc
 
+from typing import List
+
 from rotom_cmp.lexing import lexer
 from rotom_cmp.semantics.ast import (
     Program,
@@ -338,8 +340,8 @@ def p_empty(p):
 
 
 def p_error(p):
-    print(p)
-    print("Syntax error on input")
+    errors.append(f'(line={p.lineno}): Syntax error on input: "{p.value}"')
 
 
+errors: List[str] = []
 parser = yacc.yacc(debug=True)

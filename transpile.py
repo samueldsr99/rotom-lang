@@ -1,7 +1,7 @@
 import argparse
 
 from rotom_cmp.semantics.ast import Program
-from rotom_cmp.parsing.parser import parser
+from rotom_cmp.parsing.parser import parser, errors
 from rotom_cmp.codegen.js_transpiler import JavascriptTranspiler
 
 
@@ -10,11 +10,12 @@ def transpile(filename: str):
         code = fd.read()
 
         root: Program = parser.parse(code)
+        if len(errors) > 0:
+            return None, errors
+
         transpiler = JavascriptTranspiler(root)
-
         js_code = transpiler.transpile()
-
-        return js_code
+        return js_code, None
 
 
 if __name__ == "__main__":
