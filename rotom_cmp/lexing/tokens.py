@@ -49,6 +49,7 @@ class TokenType:
     LET = "LET"
     MUT = "MUT"
     WHILE = "WHILE"
+    USE = "USE"
 
     # EOF
     EOF = "EOF"

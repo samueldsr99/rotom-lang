@@ -19,6 +19,7 @@ from rotom_cmp.semantics.ast import (
     DispatchMethodExpr,
     DispatchVariableExpr,
     IndexOfExpr,
+    UseStmt,
 )
 
 
@@ -27,9 +28,35 @@ tokens = lexer.tokens
 
 def p_prog(p):
     """
-    prog : fn_def_list
+    prog : use_list fn_def_list
     """
-    p[0] = Program(p[1])
+    p[0] = Program(uses=p[1], fn_definitions=p[2])
+
+
+def p_use_list(p):
+    """
+    use_list : use use_list
+             | use
+             | empty
+    """
+    if len(p) == 3:
+        p[0] = [p[1]] + p[2]
+    else:
+        if p[1] is not None:
+            p[0] = [p[1]]
+        else:
+            p[0] = []
+
+
+def p_use(p):
+    """
+    use : USE STRING ARROW IDENTIFIER SEMICOLON
+        | USE STRING ARROW LEFT_PAREN param_list RIGHT_PAREN SEMICOLON
+    """
+    if len(p) == 6:
+        p[0] = UseStmt(module=p[2], name=p[4])
+    else:
+        p[0] = UseStmt(module=p[2], subnames=p[5])
 
 
 def p_fn_def_list(p):

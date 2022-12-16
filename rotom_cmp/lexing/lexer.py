@@ -23,6 +23,7 @@ reserved = {
     "let": TokenType.LET,
     "mut": TokenType.MUT,
     "while": TokenType.WHILE,
+    "use": TokenType.USE,
 }
 
 
@@ -74,6 +75,7 @@ tokens = [
     TokenType.LET,
     TokenType.MUT,
     TokenType.WHILE,
+    TokenType.USE,
     # EOF
     TokenType.EOF,
 ]

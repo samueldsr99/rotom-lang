@@ -31,8 +31,19 @@ class FnDefinition(Node):
         return f"{self.name}({params})"
 
 
+class UseStmt(Stmt):
+    def __init__(self, module: str, name: str = None, subnames: List[str] = []) -> None:
+        self.module = module
+        self.name = name
+        self.subnames = subnames
+
+    def visit(self, visitor: Visitor, *args):
+        return visitor.visit_UseStmt(self, *args)
+
+
 class Program(Node):
-    def __init__(self, fn_definitions: List[FnDefinition]) -> None:
+    def __init__(self, uses: List[UseStmt], fn_definitions: List[FnDefinition]) -> None:
+        self.uses = uses
         self.fn_definitions = fn_definitions
 
     def visit(self, visitor: Visitor, *args):

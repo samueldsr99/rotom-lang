@@ -18,6 +18,7 @@ from rotom_cmp.semantics.ast import (
     DispatchMethodExpr,
     DispatchVariableExpr,
     IndexOfExpr,
+    UseStmt,
 )
 
 from rotom_cmp.utils.visitor import Visitor
@@ -46,11 +47,19 @@ class JavascriptTranspiler(Visitor):
         return list_to_str([code, "main();"], breaks=2)
 
     def visit_Program(self, node: Program):
-        result = []
-        for fn_def in node.fn_definitions:
-            result.append(fn_def.visit(self))
+        uses: List[str] = list_to_str([use.visit(self) for use in node.uses])
+        fn_definitions: List[str] = list_to_str(
+            [fn_def.visit(self) for fn_def in node.fn_definitions], breaks=2
+        )
 
-        return list_to_str(result, breaks=2)
+        return list_to_str([uses, fn_definitions], breaks=2)
+
+    def visit_UseStmt(self, node: UseStmt, tabs: int = 0):
+        if node.name is not None:
+            return f"const {node.name} = require({node.module});"
+        else:
+            subnames = ", ".join(node.subnames)
+            return f"const {{{ subnames }}} = require({node.module});"
 
     def visit_FnDefinition(self, node: FnDefinition, tabs: int = 0):
         params = ", ".join(node.params)

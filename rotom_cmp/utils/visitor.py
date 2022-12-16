@@ -52,3 +52,6 @@ class Visitor(metaclass=ABCMeta):
 
     def visit_IndexOfExpr(self, node, *args):
         pass
+
+    def visit_UseStmt(self, node, *args):
+        pass
