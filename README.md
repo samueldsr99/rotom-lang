@@ -2,7 +2,7 @@
 
 <img src="https://images.wikidexcdn.net/mwuploads/wikidex/thumb/a/a5/latest/20160604220739/Rotom.png/240px-Rotom.png" alt="rotom pet" width="128"/>
 
-> Made for fun
+> Yes, the pokemon
 
 This is an in progress implementation of a js transpiled programming language, it aims to have a simply yet powerful syntax.
 
@@ -11,26 +11,13 @@ Example:
 ```
 fn fact(x) -> 1 if x == 0 else x * fact(x - 1)
 
-fn sayHi() -> "Hi"
-
-fn printit(start, end, step, callback) {
-    let mut i = start;
-    let mut count = 0;
-
-    while i < end {
-        print callback();
-        i = i + step;
-        count = count + 1;
-    }
-
-    count
-}
-
 fn main() {
-    print fact(5);
-    let num = printit(0, 5, 1, sayHi);
-    print "Ran: " + num + " times";
-    nil
+    let mut i = 0;
+    let n = 5;
+    while i < n {
+        print "fact(" + i + "): " + fact(i);
+        i = i + 1;
+    }
 }
 ```
 
@@ -41,26 +28,13 @@ function fact(x) {
   return x === 0 ? 1 : x * fact(x - 1);
 }
 
-function sayHi() {
-  return "Hi";
-}
-
-function printit(start, end, step, callback) {
-  let i = start;
-  let count = 0;
-  while (i < end) {
-    console.log(callback());
-    i = i + step;
-    count = count + 1;
-  }
-  return count;
-}
-
 function main() {
-  console.log(fact(5));
-  const num = printit(0, 5, 1, sayHi);
-  console.log("Ran: " + num + " times");
-  return null;
+  let i = 0;
+  const n = 5;
+  while (i < n) {
+    console.log("fact(" + i + "): " + fact(i));
+    i = i + 1;
+  }
 }
 
 main();
@@ -68,12 +42,19 @@ main();
 
 Output:
 
+```bash
+1/2 Transpiling...
+1/2 Transpilation succeded
+2/2 Writing js file...
+2/2 🥳 Finished!!!
+
+fact(0): 1
+fact(1): 1
+fact(2): 2
+fact(3): 6
+fact(4): 24
 ```
-120
-Hi
-Hi
-Hi
-Hi
-Hi
-Ran: 5 times
-```
+
+## Examples
+
+Check out [/examples/code](/examples/code) for more examples
