@@ -61,3 +61,6 @@ class Visitor(metaclass=ABCMeta):
 
     def visit_ReturnStmt(self, node, *args):
         pass
+
+    def visit_ExprStmt(self, node, *args):
+        pass

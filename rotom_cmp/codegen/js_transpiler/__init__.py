@@ -21,6 +21,7 @@ from rotom_cmp.semantics.ast import (
     UseStmt,
     ForStmt,
     ReturnStmt,
+    ExprStmt,
 )
 
 from rotom_cmp.utils.visitor import Visitor
@@ -54,7 +55,13 @@ class JavascriptTranspiler(Visitor):
             [fn_def.visit(self) for fn_def in node.fn_definitions], breaks=2
         )
 
-        return list_to_str([uses, fn_definitions], breaks=2)
+        code: List[str] = []
+        if len(uses) > 0:
+            code.append(uses)
+        if len(fn_definitions) > 0:
+            code.append(fn_definitions)
+
+        return list_to_str(code, breaks=2)
 
     def visit_UseStmt(self, node: UseStmt, tabs: int = 0):
         if node.name is not None:
@@ -249,3 +256,6 @@ class JavascriptTranspiler(Visitor):
 
     def visit_ReturnStmt(self, node: ReturnStmt, tabs: int = 0):
         return "  " * tabs + f"return {node.expr.visit(self, tabs)};"
+
+    def visit_ExprStmt(self, node: ExprStmt, tabs: int = 0):
+        return "  " * tabs + f"{node.expr.visit(self, tabs)};"

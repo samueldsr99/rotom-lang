@@ -22,6 +22,7 @@ from rotom_cmp.semantics.ast import (
     UseStmt,
     ForStmt,
     ReturnStmt,
+    ExprStmt,
 )
 
 
@@ -111,7 +112,7 @@ def p_stmt_list(p):
 
 def p_stmt(p):
     """
-    stmt : expr
+    stmt : expr SEMICOLON
          | declaration
          | assign
          | print
@@ -120,7 +121,10 @@ def p_stmt(p):
          | for
          | return
     """
-    p[0] = p[1]
+    if len(p) == 3:
+        p[0] = ExprStmt(expr=p[1])
+    else:
+        p[0] = p[1]
 
 
 def p_return(p):
