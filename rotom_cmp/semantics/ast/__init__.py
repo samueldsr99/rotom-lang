@@ -224,3 +224,11 @@ class ReturnStmt(Stmt):
 
     def visit(self, visitor: Visitor, *args):
         return visitor.visit_ReturnStmt(self, *args)
+
+
+class ExprStmt(Stmt):
+    def __init__(self, expr: Expr) -> None:
+        self.expr = expr
+
+    def visit(self, visitor: Visitor, *args):
+        return visitor.visit_ExprStmt(self, *args)
