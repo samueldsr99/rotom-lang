@@ -1,5 +1,5 @@
 from abc import ABCMeta
-from typing import List
+from typing import List, Tuple
 
 from rotom_cmp.utils.visitor import Visitor
 
@@ -240,3 +240,27 @@ class ExprStmt(Stmt):
 
     def visit(self, visitor: Visitor, *args):
         return visitor.visit_ExprStmt(self, *args)
+
+
+class TypeDefinitionStmt(Stmt):
+    def __init__(
+        self,
+        name: str,
+        properties: List[Tuple[str, bool]],
+        methods: List[Tuple[str, BlockExpr]],
+    ) -> None:
+        self.name = name
+        self.properties = properties
+        self.methods = methods
+
+    def visit(self, visitor: Visitor, *args):
+        return visitor.visit_TypeDefinitionStmt(self, *args)
+
+
+class TypeExpr(Expr):
+    def __init__(self, name: str, properties: List[Tuple[str, Expr]]) -> None:
+        self.name = name
+        self.properties = properties
+
+    def visit(self, visitor: Visitor, *args):
+        return visitor.visit_TypeExpr(self, *args)

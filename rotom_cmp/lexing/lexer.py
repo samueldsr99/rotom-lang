@@ -26,6 +26,7 @@ reserved = {
     "while": TokenType.WHILE,
     "use": TokenType.USE,
     "in": TokenType.IN,
+    "type": TokenType.TYPE,
 }
 
 
@@ -46,6 +47,7 @@ tokens = [
     TokenType.STAR,
     TokenType.ARROW,
     TokenType.COLON,
+    TokenType.QUESTION,
     # One or two characters
     TokenType.BANG,
     TokenType.BANG_EQUAL,
@@ -81,6 +83,7 @@ tokens = [
     TokenType.WHILE,
     TokenType.USE,
     TokenType.IN,
+    TokenType.TYPE,
     # EOF
     TokenType.EOF,
 ]
@@ -100,6 +103,7 @@ t_SLASH = r"\/"
 t_STAR = r"\*"
 t_COLON = r"\:"
 t_ARROW = r"\-\>"
+t_QUESTION = r"\?"
 
 t_BANG = r"\!"
 t_BANG_EQUAL = r"\!\="

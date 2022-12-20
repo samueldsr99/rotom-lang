@@ -26,6 +26,8 @@ from rotom_cmp.semantics.ast import (
     ReturnStmt,
     ExprStmt,
     UnaryExpr,
+    TypeDefinitionStmt,
+    TypeExpr,
 )
 
 
@@ -44,7 +46,7 @@ precedence = (
         "EQUAL_EQUAL",
         "BANG_EQUAL",
         "AND",
-        "OR"
+        "OR",
     ),
     ("left", "PLUS", "MINUS", "STAR", "SLASH"),
 )
@@ -52,9 +54,9 @@ precedence = (
 
 def p_prog(p):
     """
-    prog : use_list fn_def_list
+    prog : use_list type_def_list fn_def_list
     """
-    p[0] = Program(uses=p[1], fn_definitions=p[2])
+    p[0] = Program(uses=p[1], fn_definitions=p[3])
 
 
 def p_use_list(p):
@@ -146,6 +148,53 @@ def p_stmt(p):
         p[0] = ExprStmt(expr=p[1])
     else:
         p[0] = p[1]
+
+
+def p_type_def_list(p):
+    """
+    type_def_list : type_def type_def_list
+                  | type_def
+                  | empty
+    """
+    if len(p) == 3:
+        p[0] = [p[1]] + p[2]
+    else:
+        if p[1] is None:
+            p[0] = []
+        else:
+            p[0] = [p[1]]
+
+
+def p_type_def(p):
+    """
+    type_def : TYPE IDENTIFIER LEFT_BRACE prop_list RIGHT_BRACE
+    """
+    p[0] = TypeDefinitionStmt(name=p[2], properties=p[4], methods=[])
+
+
+def p_property_list(p):
+    """
+    prop_list : prop COMMA prop_list
+              | prop COMMA
+              | prop
+    """
+    if len(p) == 4:
+        p[0] = [p[1]] + p[3]
+    else:
+        p[0] = [p[1]]
+
+
+def p_property(p):
+    """
+    prop : IDENTIFIER
+         | IDENTIFIER QUESTION
+    """
+    if len(p) == 2:
+        # Is a required prop
+        p[0] = (p[1], True)
+    else:
+        # Is an optional prop
+        p[0] = (p[1], False)
 
 
 def p_return(p):
@@ -260,6 +309,25 @@ def p_expr_indexof(p):
     expr : expr LEFT_BRACKET expr RIGHT_BRACKET
     """
     p[0] = IndexOfExpr(expr=p[1], pos=p[3])
+
+
+def p_expr_type(p):
+    """
+    expr : IDENTIFIER COLON COLON LEFT_BRACE prop_assignment_list RIGHT_BRACE
+    """
+    p[0] = TypeExpr(name=p[1], properties=p[5])
+
+
+def p_property_assignment_list(p):
+    """
+    prop_assignment_list : IDENTIFIER EQUAL expr COMMA prop_assignment_list
+                         | IDENTIFIER EQUAL expr COMMA
+                         | IDENTIFIER EQUAL expr
+    """
+    if len(p) == 6:
+        p[0] = [(p[1], p[3])] + p[5]
+    else:
+        p[0] = [(p[1], p[3])]
 
 
 def p_expr_fn_call(p):
