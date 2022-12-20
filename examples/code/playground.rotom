@@ -1,7 +1,18 @@
 // This is a playground file, write your crap here
-
 fn sum(a, b) -> a + b
 
+struct Person {
+    firstName: string,
+    lastName: string,
+    
+    fullName: { firstName + " " + lastName }
+};
+
 fn main() {
-    print sum(3, 4);
+    let person = Person(
+        firstName="Samuel",
+        lastName="David",
+    );
+
+    print person.fullName();
 }
