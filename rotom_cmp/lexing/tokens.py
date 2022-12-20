@@ -40,7 +40,6 @@ class TokenType:
     FOR = "FOR"
     IF = "IF"
     NIL = "NIL"
-    OR = "OR"
     PRINT = "PRINT"
     PRINTLN = "PRINTLN"
     RETURN = "RETURN"
@@ -52,6 +51,9 @@ class TokenType:
     WHILE = "WHILE"
     USE = "USE"
     IN = "IN"
+    OR = "OR"
+    AND = "AND"
+    NOT = "NOT"
 
     # EOF
     EOF = "EOF"

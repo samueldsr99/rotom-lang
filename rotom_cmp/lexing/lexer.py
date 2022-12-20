@@ -5,7 +5,6 @@ from ply.yacc import yacc
 from .tokens import TokenType
 
 reserved = {
-    "and": TokenType.AND,
     "class": TokenType.CLASS,
     "else": TokenType.ELSE,
     "false": TokenType.FALSE,
@@ -14,6 +13,8 @@ reserved = {
     "if": TokenType.IF,
     "nil": TokenType.NIL,
     "or": TokenType.OR,
+    "and": TokenType.AND,
+    "not": TokenType.NOT,
     "print": TokenType.PRINT,
     "println": TokenType.PRINTLN,
     "return": TokenType.RETURN,
@@ -60,6 +61,8 @@ tokens = [
     TokenType.NUMBER,
     # Keywords
     TokenType.AND,
+    TokenType.OR,
+    TokenType.NOT,
     TokenType.CLASS,
     TokenType.ELSE,
     TokenType.FALSE,
@@ -67,7 +70,6 @@ tokens = [
     TokenType.FOR,
     TokenType.IF,
     TokenType.NIL,
-    TokenType.OR,
     TokenType.PRINT,
     TokenType.PRINTLN,
     TokenType.RETURN,

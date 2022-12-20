@@ -8,6 +8,9 @@ class Visitor(metaclass=ABCMeta):
     def visit_BinaryExpr(self, node, *args):
         pass
 
+    def visit_UnaryExpr(self, node, *args):
+        pass
+
     def visit_FnDefinition(self, node, *args):
         pass
 

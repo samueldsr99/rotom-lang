@@ -22,6 +22,7 @@ from rotom_cmp.semantics.ast import (
     ForStmt,
     ReturnStmt,
     ExprStmt,
+    UnaryExpr,
 )
 
 from rotom_cmp.utils.visitor import Visitor
@@ -95,13 +96,18 @@ class JavascriptTranspiler(Visitor):
     def visit_Variable(self, node: Variable, tabs: int = 0):
         return node.name
 
+    def visit_UnaryExpr(self, node: UnaryExpr, tabs: int = 0):
+        return f"!({node.value.visit(self, tabs)})"
+
     def visit_BinaryExpr(self, node: BinaryExpr, tabs: int = 0):
         left = node.left.visit(self, tabs)
         right = node.right.visit(self, tabs)
 
-        if node.operator == "==":
-            op = "==="
-        else:
+        operators_map = {"==": "===", "and": "&&", "or": "||"}
+
+        try:
+            op = operators_map[node.operator]
+        except KeyError:
             op = node.operator
 
         return f"{left} {op} {right}"

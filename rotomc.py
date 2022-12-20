@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 import argparse
 
 from rotom_cmp.semantics.ast import Program
@@ -23,10 +22,7 @@ def build_arg_parser():
         help="Output directory of the transpiled file",
     )
     arg_parser.add_argument(
-        "--verbosity",
-        type=int,
-        default=1,
-        help="Handle verbosity levels (0 or 1)"
+        "--verbosity", type=int, default=1, help="Handle verbosity levels (0 or 1)"
     )
 
     return arg_parser

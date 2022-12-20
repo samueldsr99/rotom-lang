@@ -25,6 +25,7 @@ from rotom_cmp.semantics.ast import (
     ForStmt,
     ReturnStmt,
     ExprStmt,
+    UnaryExpr,
 )
 
 
@@ -33,7 +34,7 @@ tokens = lexer.tokens
 
 precedence = (
     ("right", "EQUAL"),
-    ("right", "BANG"),
+    ("right", "NOT"),
     (
         "nonassoc",
         "LESS",
@@ -42,6 +43,8 @@ precedence = (
         "GREATER_EQUAL",
         "EQUAL_EQUAL",
         "BANG_EQUAL",
+        "AND",
+        "OR"
     ),
     ("left", "PLUS", "MINUS", "STAR", "SLASH"),
 )
@@ -190,6 +193,13 @@ def p_print(p):
     p[0] = PrintStmt(p[2], end_line=end_line)
 
 
+def p_expr_unary(p):
+    """
+    expr : NOT expr
+    """
+    p[0] = UnaryExpr(value=p[2])
+
+
 def p_expr_binary(p):
     """
     expr : expr PLUS expr
@@ -202,6 +212,8 @@ def p_expr_binary(p):
          | expr GREATER_EQUAL expr
          | expr EQUAL_EQUAL expr
          | expr BANG_EQUAL expr
+         | expr OR expr
+         | expr AND expr
     """
     p[0] = BinaryExpr(p[1], p[2], p[3])
 

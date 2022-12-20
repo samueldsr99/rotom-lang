@@ -76,6 +76,14 @@ class BinaryExpr(Expr):
         return visitor.visit_BinaryExpr(self, *args)
 
 
+class UnaryExpr(Expr):
+    def __init__(self, value: Expr) -> None:
+        self.value = value
+
+    def visit(self, visitor: Visitor, *args):
+        return visitor.visit_UnaryExpr(self, *args)
+
+
 class GroupingExpr(Expr):
     def __init__(self, value: Expr) -> None:
         self.value = value
