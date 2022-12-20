@@ -1,0 +1,39 @@
+fn range(n) {
+    let result = [];
+    let mut i = 0;
+
+    while i < n {
+        result.push(i);
+        i = i + 1;
+    }
+
+    return result;
+}
+
+fn main() {
+    let mut size = 1;
+    let mut order = "increment";
+
+    while 1 {
+        let stars = [];
+        for _ in range(size) {
+            stars.push("*");
+        }
+
+        print stars.join("");
+        
+        if size == 10 {
+            order = "decrement";
+        } else {
+            if size == 0 {
+                order = "increment";
+            }
+        }
+
+        if order == "increment" {
+            size = size + 1;
+        } else {
+            size = size - 1;
+        }
+    }
+}
