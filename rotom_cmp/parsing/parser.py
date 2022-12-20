@@ -26,6 +26,7 @@ from rotom_cmp.semantics.ast import (
     ReturnStmt,
     ExprStmt,
     UnaryExpr,
+    TypeDefinitionStmt,
 )
 
 
@@ -44,7 +45,7 @@ precedence = (
         "EQUAL_EQUAL",
         "BANG_EQUAL",
         "AND",
-        "OR"
+        "OR",
     ),
     ("left", "PLUS", "MINUS", "STAR", "SLASH"),
 )
@@ -52,9 +53,9 @@ precedence = (
 
 def p_prog(p):
     """
-    prog : use_list fn_def_list
+    prog : use_list type_def fn_def_list
     """
-    p[0] = Program(uses=p[1], fn_definitions=p[2])
+    p[0] = Program(uses=p[1], fn_definitions=p[3])
 
 
 def p_use_list(p):
@@ -146,6 +147,25 @@ def p_stmt(p):
         p[0] = ExprStmt(expr=p[1])
     else:
         p[0] = p[1]
+
+
+def p_type_def(p):
+    """
+    type_def : TYPE IDENTIFIER LEFT_BRACE prop_list RIGHT_BRACE
+    """
+    p[0] = TypeDefinitionStmt(name=p[2], properties=p[4], methods=[])
+
+
+def p_property_list(p):
+    """
+    prop_list : IDENTIFIER COMMA prop_list
+              | IDENTIFIER COMMA
+              | IDENTIFIER
+    """
+    if len(p) == 4:
+        p[0] = [p[1]] + p[3]
+    else:
+        p[0] = [p[1]]
 
 
 def p_return(p):

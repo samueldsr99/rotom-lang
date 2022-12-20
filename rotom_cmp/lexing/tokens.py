@@ -54,6 +54,7 @@ class TokenType:
     OR = "OR"
     AND = "AND"
     NOT = "NOT"
+    TYPE = "TYPE"
 
     # EOF
     EOF = "EOF"

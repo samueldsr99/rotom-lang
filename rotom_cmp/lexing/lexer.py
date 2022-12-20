@@ -26,6 +26,7 @@ reserved = {
     "while": TokenType.WHILE,
     "use": TokenType.USE,
     "in": TokenType.IN,
+    "type": TokenType.TYPE,
 }
 
 
@@ -81,6 +82,7 @@ tokens = [
     TokenType.WHILE,
     TokenType.USE,
     TokenType.IN,
+    TokenType.TYPE,
     # EOF
     TokenType.EOF,
 ]
