@@ -47,6 +47,7 @@ tokens = [
     TokenType.STAR,
     TokenType.ARROW,
     TokenType.COLON,
+    TokenType.QUESTION,
     # One or two characters
     TokenType.BANG,
     TokenType.BANG_EQUAL,
@@ -102,6 +103,7 @@ t_SLASH = r"\/"
 t_STAR = r"\*"
 t_COLON = r"\:"
 t_ARROW = r"\-\>"
+t_QUESTION = r"\?"
 
 t_BANG = r"\!"
 t_BANG_EQUAL = r"\!\="

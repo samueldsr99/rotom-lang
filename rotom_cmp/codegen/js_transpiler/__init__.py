@@ -23,6 +23,7 @@ from rotom_cmp.semantics.ast import (
     ReturnStmt,
     ExprStmt,
     UnaryExpr,
+    TypeExpr,
 )
 
 from rotom_cmp.utils.visitor import Visitor
@@ -136,8 +137,8 @@ class JavascriptTranspiler(Visitor):
         )
 
     def visit_GroupingExpr(self, node: GroupingExpr, tabs: int = 0):
-        value = node.value.visit(self)
-        return "  " * tabs + f"({value})"
+        value = node.value.visit(self, tabs)
+        return f"({value})"
 
     def visit_PrintStmt(self, node: PrintStmt, tabs: int = 0):
         value = node.value.visit(self)
@@ -264,3 +265,12 @@ class JavascriptTranspiler(Visitor):
 
     def visit_ExprStmt(self, node: ExprStmt, tabs: int = 0):
         return "  " * tabs + f"{node.expr.visit(self, tabs)};"
+
+    def visit_TypeExpr(self, node: TypeExpr, tabs: int = 0):
+        body = list_to_str(
+            [
+                "  " * (tabs + 1) + f"{property[0]}: {property[1].visit(self, tabs)},"
+                for property in node.properties
+            ]
+        )
+        return list_to_str(["{", body, "  " * tabs + "}"])

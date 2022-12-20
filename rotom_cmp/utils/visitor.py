@@ -70,3 +70,6 @@ class Visitor(metaclass=ABCMeta):
 
     def visit_TypeDefinitionStmt(self, node, *args):
         pass
+
+    def visit_TypeExpr(self, node, *args):
+        pass

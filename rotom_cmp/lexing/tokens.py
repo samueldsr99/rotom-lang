@@ -14,6 +14,7 @@ class TokenType:
     SLASH = "SLASH"
     STAR = "STAR"
     COLON = "COLON"
+    QUESTION = "QUESTION"
 
     # One or two characters
     BANG = "BANG"

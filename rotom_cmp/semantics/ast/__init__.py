@@ -249,10 +249,18 @@ class TypeDefinitionStmt(Stmt):
         properties: List[Tuple[str, bool]],
         methods: List[Tuple[str, BlockExpr]],
     ) -> None:
-        super().__init__()
         self.name = name
         self.properties = properties
         self.methods = methods
 
     def visit(self, visitor: Visitor, *args):
         return visitor.visit_TypeDefinitionStmt(self, *args)
+
+
+class TypeExpr(Expr):
+    def __init__(self, name: str, properties: List[Tuple[str, Expr]]) -> None:
+        self.name = name
+        self.properties = properties
+
+    def visit(self, visitor: Visitor, *args):
+        return visitor.visit_TypeExpr(self, *args)
