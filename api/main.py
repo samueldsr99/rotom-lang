@@ -26,7 +26,7 @@ def make_transpilation(code: str):
     return js_code, None
 
 
-@app.get("/js/transpile")
+@app.post("/js/transpile")
 async def transpile_js(item: JSTranspilationRequest):
     transpiled, errors = make_transpilation(item.rotom_code)
 
