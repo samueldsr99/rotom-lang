@@ -3528,12 +3528,6 @@ state 119
     (71) expr -> expr . IF expr ELSE expr
 
     SEMICOLON       reduce using rule 52 (expr -> expr OR expr .)
-    LESS            reduce using rule 52 (expr -> expr OR expr .)
-    LESS_EQUAL      reduce using rule 52 (expr -> expr OR expr .)
-    GREATER         reduce using rule 52 (expr -> expr OR expr .)
-    GREATER_EQUAL   reduce using rule 52 (expr -> expr OR expr .)
-    EQUAL_EQUAL     reduce using rule 52 (expr -> expr OR expr .)
-    BANG_EQUAL      reduce using rule 52 (expr -> expr OR expr .)
     OR              reduce using rule 52 (expr -> expr OR expr .)
     AND             reduce using rule 52 (expr -> expr OR expr .)
     DOT             reduce using rule 52 (expr -> expr OR expr .)
@@ -3553,17 +3547,23 @@ state 119
     MINUS           shift and go to state 76
     STAR            shift and go to state 77
     SLASH           shift and go to state 78
+    LESS            shift and go to state 79
+    LESS_EQUAL      shift and go to state 80
+    GREATER         shift and go to state 81
+    GREATER_EQUAL   shift and go to state 82
+    EQUAL_EQUAL     shift and go to state 83
+    BANG_EQUAL      shift and go to state 84
 
   ! PLUS            [ reduce using rule 52 (expr -> expr OR expr .) ]
   ! MINUS           [ reduce using rule 52 (expr -> expr OR expr .) ]
   ! STAR            [ reduce using rule 52 (expr -> expr OR expr .) ]
   ! SLASH           [ reduce using rule 52 (expr -> expr OR expr .) ]
-  ! LESS            [ shift and go to state 79 ]
-  ! LESS_EQUAL      [ shift and go to state 80 ]
-  ! GREATER         [ shift and go to state 81 ]
-  ! GREATER_EQUAL   [ shift and go to state 82 ]
-  ! EQUAL_EQUAL     [ shift and go to state 83 ]
-  ! BANG_EQUAL      [ shift and go to state 84 ]
+  ! LESS            [ reduce using rule 52 (expr -> expr OR expr .) ]
+  ! LESS_EQUAL      [ reduce using rule 52 (expr -> expr OR expr .) ]
+  ! GREATER         [ reduce using rule 52 (expr -> expr OR expr .) ]
+  ! GREATER_EQUAL   [ reduce using rule 52 (expr -> expr OR expr .) ]
+  ! EQUAL_EQUAL     [ reduce using rule 52 (expr -> expr OR expr .) ]
+  ! BANG_EQUAL      [ reduce using rule 52 (expr -> expr OR expr .) ]
   ! OR              [ shift and go to state 85 ]
   ! AND             [ shift and go to state 86 ]
   ! DOT             [ shift and go to state 87 ]
@@ -3594,12 +3594,6 @@ state 120
     (71) expr -> expr . IF expr ELSE expr
 
     SEMICOLON       reduce using rule 53 (expr -> expr AND expr .)
-    LESS            reduce using rule 53 (expr -> expr AND expr .)
-    LESS_EQUAL      reduce using rule 53 (expr -> expr AND expr .)
-    GREATER         reduce using rule 53 (expr -> expr AND expr .)
-    GREATER_EQUAL   reduce using rule 53 (expr -> expr AND expr .)
-    EQUAL_EQUAL     reduce using rule 53 (expr -> expr AND expr .)
-    BANG_EQUAL      reduce using rule 53 (expr -> expr AND expr .)
     OR              reduce using rule 53 (expr -> expr AND expr .)
     AND             reduce using rule 53 (expr -> expr AND expr .)
     DOT             reduce using rule 53 (expr -> expr AND expr .)
@@ -3619,17 +3613,23 @@ state 120
     MINUS           shift and go to state 76
     STAR            shift and go to state 77
     SLASH           shift and go to state 78
+    LESS            shift and go to state 79
+    LESS_EQUAL      shift and go to state 80
+    GREATER         shift and go to state 81
+    GREATER_EQUAL   shift and go to state 82
+    EQUAL_EQUAL     shift and go to state 83
+    BANG_EQUAL      shift and go to state 84
 
   ! PLUS            [ reduce using rule 53 (expr -> expr AND expr .) ]
   ! MINUS           [ reduce using rule 53 (expr -> expr AND expr .) ]
   ! STAR            [ reduce using rule 53 (expr -> expr AND expr .) ]
   ! SLASH           [ reduce using rule 53 (expr -> expr AND expr .) ]
-  ! LESS            [ shift and go to state 79 ]
-  ! LESS_EQUAL      [ shift and go to state 80 ]
-  ! GREATER         [ shift and go to state 81 ]
-  ! GREATER_EQUAL   [ shift and go to state 82 ]
-  ! EQUAL_EQUAL     [ shift and go to state 83 ]
-  ! BANG_EQUAL      [ shift and go to state 84 ]
+  ! LESS            [ reduce using rule 53 (expr -> expr AND expr .) ]
+  ! LESS_EQUAL      [ reduce using rule 53 (expr -> expr AND expr .) ]
+  ! GREATER         [ reduce using rule 53 (expr -> expr AND expr .) ]
+  ! GREATER_EQUAL   [ reduce using rule 53 (expr -> expr AND expr .) ]
+  ! EQUAL_EQUAL     [ reduce using rule 53 (expr -> expr AND expr .) ]
+  ! BANG_EQUAL      [ reduce using rule 53 (expr -> expr AND expr .) ]
   ! OR              [ shift and go to state 85 ]
   ! AND             [ shift and go to state 86 ]
   ! DOT             [ shift and go to state 87 ]

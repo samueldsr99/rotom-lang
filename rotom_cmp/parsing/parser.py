@@ -37,6 +37,7 @@ tokens = lexer.tokens
 precedence = (
     ("right", "EQUAL"),
     ("right", "NOT"),
+    ("nonassoc", "AND", "OR"),
     (
         "nonassoc",
         "LESS",
@@ -45,8 +46,6 @@ precedence = (
         "GREATER_EQUAL",
         "EQUAL_EQUAL",
         "BANG_EQUAL",
-        "AND",
-        "OR",
     ),
     ("left", "PLUS", "MINUS", "STAR", "SLASH"),
 )
