@@ -1,3 +1,4 @@
+// This code prints the content of itself
 use "fs" -> fs;
 
 fn main() {
