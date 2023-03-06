@@ -123,10 +123,14 @@ class JavascriptTranspiler(Visitor):
                     exprs.append(val)
 
             return f"[{', '.join(exprs)}]"
+        elif node.type == "string":
+            return f"{node.value}"
+        elif node.type == "fstring":
+            return f"`{node.value[1:-1]}`"
         elif node.value == "nil":
             return "null"
         else:
-            return f"{node.value}"
+            return node.value
 
     def visit_DeclarationStmt(self, node: DeclarationStmt, tabs: int = 0):
         decl_keyword = "let" if node.is_mutable else "const"

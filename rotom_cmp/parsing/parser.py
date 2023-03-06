@@ -29,6 +29,7 @@ from rotom_cmp.semantics.ast import (
     TypeDefinitionStmt,
     TypeExpr,
 )
+from rotom_cmp.utils import is_fstring
 
 
 tokens = lexer.tokens
@@ -288,7 +289,10 @@ def p_expr_literal(p):
         elif p[1] is None:
             type_ = "nil"
         elif isinstance(p[1], str):
-            type_ = "string"
+            if is_fstring(p[1]):
+                type_ = "fstring"
+            else:
+                type_ = "string"
         p[0] = Literal(p[1], type=type_)
 
 
@@ -419,7 +423,7 @@ def p_empty(p):
 
 
 def p_error(p):
-    errors.append(f'(line={p.lineno}): Syntax error on input: "{p.value}"')
+    errors.append(f"(line={p.lineno}): Syntax error on input: {p.value}")
 
 
 errors: List[str] = []

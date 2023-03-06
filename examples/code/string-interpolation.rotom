@@ -1,0 +1,32 @@
+fn testOne() {
+  let firstName = "John";
+  let lastName = "Doe";
+  let fullName = "${firstName} ${lastName}";
+  print fullName;
+}
+
+fn testTwo() {
+  print "Some random number: ${Math.random()}";
+}
+
+fn testThree() {
+  let name = "John";
+
+  let nonFormatted1 = "This is a non formatted string";
+  let nonFormatted2 = "This is also a non formatted string $";
+  let nonFormatted3 = "This is also a non formatted string ${";
+  let nonFormatted4 = "This is also a non formatted string $}";
+
+  let formattedString1 = "This is a formatted string ${1}";
+  let formattedString2 = "This is also a formatted string ${name}";
+  
+  // Do not use "" inside ${} pattern, use '' instead. '' strings are not formatted.
+  // This implies that you cannot make nested formatted strings inline.
+  let formattedString3 = "This is also a formatted string ${'Hello'}";
+}
+
+fn main() {
+  testOne();
+  testTwo();
+  testThree();
+}
